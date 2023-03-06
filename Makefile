@@ -1,4 +1,4 @@
-SRCS		= main.c ft_split.c hooks.c
+SRCS		= main.c ft_split.c hooks.c move.c raycast.c casts_utils.c
 
 OBJS		= ${SRCS:.c=.o}
 

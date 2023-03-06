@@ -5,7 +5,7 @@ int ft_red_cross(t_main *Main)
     int i;
 
     i = 0;
-    printf("x = %zu, y = %zu\n", Main->pl->x, Main->pl->y);
+    printf("x = %zu, y = %zu, ang = %lf\n", Main->pl->x, Main->pl->y, Main->pl->ang);
     free(Main->pl);
     while (Main->map && Main->map[i])
         free(Main->map[i++]);
@@ -46,7 +46,7 @@ int ft_press(int key, t_main *Main)
     else if (key == LEFT_ARROW)
         Main->pl->flg_trn_l = 1;
     else if (key == 126)
-        printf("x == %zu, y == %zu\n", Main->pl->x, Main->pl->y);
+        printf("x == %zu, y == %zu, ang = %lf\n", Main->pl->x, Main->pl->y, Main->pl->ang);
     else
         printf("unknown key = %d\n", key);
     return (0);
