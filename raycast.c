@@ -2,8 +2,8 @@
 
 void    find_start_end(double wall_size, int *st, int *en)
 {
-	*st = (384 - (int)wall_size / 2);
-	*en = (384 + (int)wall_size / 2);
+	*st = (384 - ceil(wall_size / 2));
+	*en = (384 + floor(wall_size / 2));
 	if (*st < -1)
 		(*st) = -1;
 	if (*en > 768)
@@ -22,7 +22,7 @@ void    draw_wall(t_img *vis, t_pl *pl, int cnt, size_t off_x)
 		wall_end = 768;
 	}
 	else
-		find_start_end(768.0 * 10 / pl->rays_len[cnt], &wall_start, &wall_end);
+		find_start_end(768.0 * 8 / pl->rays_len[cnt], &wall_start, &wall_end);
 	while (++wall_start < wall_end)
 	{
 		dst = vis->addr + wall_start * vis->line_length + off_x;
@@ -79,9 +79,9 @@ void    cast_rays(t_main *M, t_pl *pl)
 
 
 	cnt = 0;
-//	pl->x = 48;
-//	pl->y = 32;
-//	pl->ang = 270.0;
+//	pl->x = 340;
+//	pl->y = 54;
+//	pl->ang = 278.0;
 	while (cnt < 1024)
 	{
 		pl->rays_ang[cnt] = (pl->ang + ((double)cnt * 30.0 / 1024.0) - 15.0);
