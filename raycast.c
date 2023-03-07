@@ -2,7 +2,7 @@
 
 void    find_start_end(double wall_size, int *st, int *en)
 {
-	*st = (384 - ceil(wall_size / 2));
+	*st = (384 - ceil(wall_size / 2)) - 1;
 	*en = (384 + floor(wall_size / 2));
 	if (*st < -1)
 		(*st) = -1;
