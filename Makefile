@@ -13,17 +13,19 @@ CC			= clang
 
 RM			= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror -fsanitize=address -O2
+# Later: don't repeat yourself, clean this up later
+# Later: possible bug: are -framework libs or more like cflags?
+MACOS_LIBS = -lmlx -framework OpenGL -framework AppKit
+LINUX_LIBS = -Lmlx_linux -lXext -lX11 -lmlx
 
-MACOS_FLAGS = -lmlx -framework OpenGL -framework AppKit -DCUB_PLATFORM=CUB_PLATFORM_MACOS
+# Later: possible build optimization: add colon to force evaluation
+CFLAGS		= -Wall -Wextra -Werror -fsanitize=address -O2 \
+	${if ${filter Linux, ${shell uname}}, -DCUB_PLATFORM=CUB_PLATFORM_LINUX} \
+	${if ${filter Darwin, ${shell uname}}, -DCUB_PLATFORM=CUB_PLATFORM_MACOS}
 
-LINUX_FLAGS = -Lmlx_linux -lXext -lX11 -lmlx -DCUB_PLATFORM=CUB_PLATFORM_LINUX
-
-PLATFORM_FLAGS = \
-	$(if $(filter Linux, $(shell uname)), $(LINUX_FLAGS)) \
-	$(if $(filter Darwin, $(shell uname)), $(MACOS_FLAGS))
-
-LIBS		= $(PLATFORM_FLAGS)
+LIBS = \
+	${if ${filter Linux, ${shell uname}}, ${LINUX_LIBS}} \
+	${if ${filter Darwin, ${shell uname}}, ${MACOS_LIBS}}
 
 %.o:	%.c ${HEAD}
 		${CC} ${CFLAGS} -c $< -o $@
