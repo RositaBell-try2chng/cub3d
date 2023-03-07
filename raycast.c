@@ -16,13 +16,13 @@ void    draw_wall(t_img *vis, t_pl *pl, int cnt, size_t off_x)
 	int             wall_end;
 	unsigned int    *dst;
 
-	if (pl->rays_len[cnt] == 0.0)
+	if (pl->rays_len[cnt] <= 0.00001)
 	{
 		wall_start = -1;
 		wall_end = 768;
 	}
 	else
-		find_start_end(768.0 * 8 / pl->rays_len[cnt], &wall_start, &wall_end);
+		find_start_end(768.0 * 10 / pl->rays_len[cnt], &wall_start, &wall_end);
 	while (++wall_start < wall_end)
 	{
 		dst = vis->addr + wall_start * vis->line_length + off_x;
@@ -80,19 +80,17 @@ void    cast_rays(t_main *M, t_pl *pl)
 
 	cnt = 0;
 //	pl->x = 48;
-//	pl->y = 240;
+//	pl->y = 32;
 //	pl->ang = 270.0;
 	while (cnt < 1024)
 	{
-		pl->rays_ang[cnt] = (pl->ang + ((double)cnt * 90.0 / 1024.0) - 45.0);
+		pl->rays_ang[cnt] = (pl->ang + ((double)cnt * 30.0 / 1024.0) - 15.0);
 		if (pl->rays_ang[cnt] >= 360.0)
 			pl->rays_ang[cnt] -= 360.0;
 		else if (pl->rays_ang[cnt] < 0.0)
 			pl->rays_ang[cnt] += 360.0;
 		pl->rays_len[cnt] = 0;
 		pl->rays_len[cnt] = math_ray_len(M, pl, cnt, pl->rays_ang[cnt]);
-//		if (cnt > 510 && cnt < 514)
-//			printf("cnt = %d, len = %lf\n", cnt, pl->rays_len[cnt]);
 		pl->rays_len[cnt] = math_need_len(pl->rays_len[cnt], fabs(pl->ang - pl->rays_ang[cnt]));
 		draw_vis(&M->mp->vis, pl, cnt, cnt * (M->mp->vis.bits_per_pixel / 8));
 		cnt += 1;

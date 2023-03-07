@@ -32,20 +32,18 @@ double	cast_vertical(t_main *M, t_pl *pl, int cnt, double ang)
 
 	sign = 1;
 	pl->wall_color[cnt] = WALL_N;
+	newY = 32.0 * floor((double)pl->y / 32.0) + 32.0;
 	if (ang == 270.0)
 	{
 		sign = -1;
 		pl->wall_color[cnt] = WALL_S;
+		newY = 32.0 * floor((double)pl->y / 32.0) - 0.000001;
 	}
-	newY = pl->y + 32.0 * sign;
-	while (newY >= 0 && (int)newY < M->map_H)
+	while (newY >= 0 && (int)newY / 32 < M->map_H)
 	{
 		if (M->map[(int)newY / 32][pl->x / 32] == '1')
 			break;
-		newY += 32.0 + sign;
+		newY += 32.0 * sign;
 	}
-	newY = floor(newY / 32.0) * 32.0;
-	/*if (sign == -1)
-		newY += 32;*/
 	return (fabs(newY - pl->y));
 }

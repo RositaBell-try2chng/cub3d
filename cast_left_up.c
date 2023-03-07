@@ -9,7 +9,7 @@ static double	find_X_wall(t_main *M, t_pl *pl, int cnt, char *flg)
 
 	flg_wall = 0;
 	ang = fmod(pl->rays_ang[cnt], 90.0);
-	newX = (double)(((pl->x / 32) * 32.0) - 0.0001);
+	newX = (double)(((pl->x / 32) * 32.0) - 0.000001);
 	while (!flg_wall)
 	{
 		newY = pl->y - (pl->x - newX) * tan(ang * PI / 180.0);
@@ -32,7 +32,7 @@ static double	find_Y_wall(t_main *M, t_pl *pl, int cnt, char *flg)
 
 	flg_wall = 0;
 	ang = 90.0 - fmod(pl->rays_ang[cnt], 90.0);
-	newY = (double)(((pl->y / 32) * 32.0) - 0.0001);
+	newY = (double)(((pl->y / 32) * 32.0) - 0.000001);
 	while (!flg_wall)
 	{
 		newX = pl->x - (pl->y - newY) * tan(ang * PI / 180.0);
