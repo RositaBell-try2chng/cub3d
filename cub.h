@@ -21,7 +21,6 @@
 
 # define PI 3.14159265
 
-
 //minimap colors
 // ORGB opaqueness
 # define WALL_COLOR 0x800000FF
@@ -103,12 +102,19 @@ int		check_walls_y(char **map, int x, int y, double one_speed);
 
 //raycast
 void    cast_rays(t_main *M, t_pl *pl);
-double  math_ray_len(t_main *M, int cnt, double ang);
+double  math_ray_len(t_main *M, t_pl *pl, int cnt, double ang);
 void	math_ray_len1(t_main *M, t_pl *pl, int cnt);
 double  math_need_len(double real, double ang);
 
-//cast_utils
+//cast_func
 double	cast_horisontal(t_main *M, t_pl *pl, int cnt, double ang);
 double	cast_vertical(t_main *M, t_pl *pl, int cnt, double ang);
 double	cast_right_down(t_main *M, t_pl *pl, int cnt);
+double	cast_left_down(t_main *M, t_pl *pl, int cnt);
+double	cast_left_up(t_main *M, t_pl *pl, int cnt);
+double	cast_right_up(t_main *M, t_pl *pl, int cnt);
+
+//cast_utils
+char	check_correct(t_main *M, double x, double y, char *flg);
+char	check_wall(t_main *M, double x, double y);
 #endif
