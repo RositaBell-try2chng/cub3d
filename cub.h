@@ -1,6 +1,9 @@
 #ifndef CUB_H
 # define CUB_H
 
+// # include <X11/X.h> // Seems to be working without this
+# include <X11/keysym.h>
+
 # include "mlx/mlx.h"
 # include <stdio.h>
 # include <unistd.h>
@@ -11,13 +14,13 @@
 # include <math.h>
 # include <limits.h>
 
-# define ESC 53
-# define W 13
-# define A 0
-# define S 1
-# define D 2
-# define RIGHT_ARROW 124
-# define LEFT_ARROW 123
+# define ESC XK_Escape
+# define W XK_w
+# define A XK_a
+# define S XK_s
+# define D XK_d
+# define RIGHT_ARROW XK_Right
+# define LEFT_ARROW XK_Left
 
 # define PI 3.14159265
 
