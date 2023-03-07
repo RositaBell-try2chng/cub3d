@@ -9,13 +9,21 @@ NAME		= cub3d
 
 MLX			= mlx/
 
-CC			= gcc
+CC			= clang
 
 RM			= rm -f
 
 CFLAGS		= -Wall -Wextra -Werror -fsanitize=address -O2
 
-LIBS		= -lmlx -framework OpenGL -framework AppKit
+# MACOS_FLAGS = -lmlx -framework OpenGL -framework AppKit
+# 
+# LINUX_FLAGS = 
+# 
+# PLATFORM_FLAGS = \
+# 	$(if $(filter Linux, $(shell uname)), $(LINUX_FLAGS)) \
+# 	$(if $(filter Darwin, $(shell uname)), $(MACOS_FLAGS))
+
+LIBS		= -Lmlx_linux -lXext -lX11 -lmlx
 
 %.o:	%.c ${HEAD}
 		${CC} ${CFLAGS} -c $< -o $@
