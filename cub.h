@@ -1,9 +1,6 @@
 #ifndef CUB_H
 # define CUB_H
 
-// # include <X11/X.h> // Seems to be working without this
-# include <X11/keysym.h>
-
 # include "mlx/mlx.h"
 # include <stdio.h>
 # include <unistd.h>
@@ -14,13 +11,14 @@
 # include <math.h>
 # include <limits.h>
 
-# define ESC XK_Escape
-# define W XK_w
-# define A XK_a
-# define S XK_s
-# define D XK_d
-# define RIGHT_ARROW XK_Right
-# define LEFT_ARROW XK_Left
+# define CUB_PLATFORM_MACOS 0
+# define CUB_PLATFORM_LINUX 1
+
+# if CUB_PLATFORM == CUB_PLATFORM_MACOS
+#  include "cub_macos.h"
+# elif CUB_PLATFORM == CUB_PLATFORM_LINUX
+#  include "cub_linux.h"
+# endif
 
 # define PI 3.14159265
 

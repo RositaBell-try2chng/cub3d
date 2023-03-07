@@ -15,15 +15,15 @@ RM			= rm -f
 
 CFLAGS		= -Wall -Wextra -Werror -fsanitize=address -O2
 
-# MACOS_FLAGS = -lmlx -framework OpenGL -framework AppKit
-# 
-# LINUX_FLAGS = 
-# 
-# PLATFORM_FLAGS = \
-# 	$(if $(filter Linux, $(shell uname)), $(LINUX_FLAGS)) \
-# 	$(if $(filter Darwin, $(shell uname)), $(MACOS_FLAGS))
+MACOS_FLAGS = -lmlx -framework OpenGL -framework AppKit -DCUB_PLATFORM=CUB_PLATFORM_MACOS
 
-LIBS		= -Lmlx_linux -lXext -lX11 -lmlx
+LINUX_FLAGS = -Lmlx_linux -lXext -lX11 -lmlx -DCUB_PLATFORM=CUB_PLATFORM_LINUX
+
+PLATFORM_FLAGS = \
+	$(if $(filter Linux, $(shell uname)), $(LINUX_FLAGS)) \
+	$(if $(filter Darwin, $(shell uname)), $(MACOS_FLAGS))
+
+LIBS		= $(PLATFORM_FLAGS)
 
 %.o:	%.c ${HEAD}
 		${CC} ${CFLAGS} -c $< -o $@
