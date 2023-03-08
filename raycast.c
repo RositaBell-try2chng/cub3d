@@ -1,5 +1,19 @@
 #include "cub.h"
 
+unsigned int	get_pxl(t_main *M, t_pl *pl, int cnt, int h)
+{
+	int				x;
+	int				y;
+	unsigned int	*src;
+
+	if (pl->wall_color[cnt] != WALL_W)
+		return (pl->wall_color[cnt]);
+	y = h % M->mp->wall_W.h;
+	x = cnt % M->mp->wall_W.w;
+	src = M->mp->wall_W.addr + y * M->mp->wall_W.line_length + x * (M->mp->wall_W.bits_per_pixel / 8);
+	return (*src);
+}
+
 void    find_start_end(double wall_size, int *st, int *en)
 {
 	*st = (384 - ceil(wall_size / 2)) - 1;
@@ -10,12 +24,14 @@ void    find_start_end(double wall_size, int *st, int *en)
 		(*en) = 768;
 }
 
-void    draw_wall(t_img *vis, t_pl *pl, int cnt, size_t off_x)
+void    draw_wall(t_main *M, t_pl *pl, int cnt, size_t off_x)
 {
 	int             wall_start;
 	int             wall_end;
 	unsigned int    *dst;
+	t_img			*vis;
 
+	vis = &M->mp->vis;
 	if (pl->rays_len[cnt] <= 0.00001)
 	{
 		wall_start = -1;
@@ -26,15 +42,17 @@ void    draw_wall(t_img *vis, t_pl *pl, int cnt, size_t off_x)
 	while (++wall_start < wall_end)
 	{
 		dst = vis->addr + wall_start * vis->line_length + off_x;
-		*dst = pl->wall_color[cnt];
+		*dst = get_pxl(M, pl, cnt, wall_start);//pl->wall_color[cnt];
 	}
 }
 
-void    draw_vis(t_img *vis, t_pl *pl, int cnt, size_t off_x)
+void    draw_vis(t_main *M, t_pl *pl, int cnt, size_t off_x)
 {
 	int             y;
 	unsigned int    *dst;
+	t_img			*vis;
 
+	vis = &M->mp->vis;
 	y = 0;
 	while (y < 384)
 	{
@@ -48,7 +66,7 @@ void    draw_vis(t_img *vis, t_pl *pl, int cnt, size_t off_x)
 		*dst = DOWN_COLOR;
 		y++;
 	}
-	draw_wall(vis, pl, cnt, off_x);
+	draw_wall(M, pl, cnt, off_x);
 }
 
 double  math_need_len(double real, double ang)
@@ -91,8 +109,8 @@ void    cast_rays(t_main *M, t_pl *pl)
 			pl->rays_ang[cnt] += 360.0;
 		pl->rays_len[cnt] = 0;
 		pl->rays_len[cnt] = math_ray_len(M, pl, cnt, pl->rays_ang[cnt]);
-		pl->rays_len[cnt] = math_need_len(pl->rays_len[cnt], fabs(pl->ang - pl->rays_ang[cnt]));
-		draw_vis(&M->mp->vis, pl, cnt, cnt * (M->mp->vis.bits_per_pixel / 8));
+		pl->rays_len[cnt] *= sin((90 - fabs(pl->ang - pl->rays_ang[cnt])) * PI / 180);
+		draw_vis(M, pl, cnt, cnt * (M->mp->vis.bits_per_pixel / 8));
 		cnt += 1;
 	}
 }

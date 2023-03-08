@@ -64,6 +64,8 @@ typedef struct s_image
     int		bits_per_pixel;
     int		line_length;
     int		endian;
+    int		h; //высота текстуры
+    int		w; //ширина текстуры
 } t_img;
 
 typedef struct s_mlx
@@ -72,6 +74,11 @@ typedef struct s_mlx
     void    *win;
     t_img   map;
     t_img   vis;
+    //для текстур стен
+    t_img	wall_N;
+    t_img	wall_S;
+    t_img	wall_E;
+    t_img	wall_W;
 } t_mlx;
 
 typedef struct s_main

@@ -148,14 +148,21 @@ void draw_full_back(t_img *map, int color)
     }
 }
 
+void    imgs_init(t_main *M)
+{
+    M->mp->map.img = mlx_new_image(M->mp->mlx, 500, 500);
+    M->mp->map.addr = get_data_img(&M->mp->map);
+    M->mp->vis.img = mlx_new_image(M->mp->mlx, 1024, 768);
+    M->mp->vis.addr = get_data_img(&M->mp->vis);
+    M->mp->wall_W.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_W.xpm", &M->mp->wall_W.w, &M->mp->wall_W.h);
+    M->mp->wall_W.addr = get_data_img(&M->mp->wall_W);
+}
+
 void game_play(t_main *Main)
 {
     Main->mp->mlx = mlx_init();
     Main->mp->win = mlx_new_window(Main->mp->mlx, 1024, 768, "try");
-    Main->mp->map.img = mlx_new_image(Main->mp->mlx, 500, 500);
-    Main->mp->map.addr = get_data_img(&Main->mp->map);
-    Main->mp->vis.img = mlx_new_image(Main->mp->mlx, 1024, 768);
-    Main->mp->vis.addr = get_data_img(&Main->mp->vis);
+    imgs_init(Main);
     draw_full_back(&Main->mp->map, WALL_COLOR);
     draw_full_vis(&Main->mp->vis);
     mlx_hook(Main->mp->win, 2, 1L << 0, ft_press, Main);
