@@ -1,0 +1,17 @@
+t_main.{
+    char    **map;
+    int     map_H;
+    int     map_W[50];
+}
+
+fd не нужен
+
+проверить экстеншн или нет
+
+t_mlx.{
+    //для текстур стен
+    t_img	wall_N;
+    t_img	wall_S;
+    t_img	wall_E;
+    t_img	wall_W;
+}
