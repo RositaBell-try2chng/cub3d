@@ -1,5 +1,5 @@
 SRCS		= main.c ft_split.c hooks.c move.c raycast.c casts_utils.c \
-				cast_horisontal_vertical.c cast_left_down.c cast_left_up.c cast_right_down.c cast_right_up.c
+				cast_horisontal_vertical.c cast_left_down.c cast_left_up.c cast_right_down.c cast_right_up.c draws.c draws_utils.c
 
 OBJS		= ${SRCS:.c=.o}
 
