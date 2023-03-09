@@ -22,6 +22,7 @@ double	cast_horisontal(t_main *M, t_pl *pl, int cnt, double ang)
 	newX = floor(newX / 32.0) * 32.0;
 	if (sign == -1)
 		newX += 32.0;
+	pl->hit_value[cnt] = fmod(pl->y, SCALE);
 	return (fabs(newX - pl->x));
 }
 
@@ -45,5 +46,6 @@ double	cast_vertical(t_main *M, t_pl *pl, int cnt, double ang)
 			break;
 		newY += 32.0 * sign;
 	}
+	pl->hit_value[cnt] = fmod(pl->x, SCALE);
 	return (fabs(newY - pl->y));
 }

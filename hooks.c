@@ -11,6 +11,7 @@ int ft_red_cross(t_main *Main)
         free(Main->map[i++]);
     mlx_destroy_image(Main->mp->mlx, Main->mp->vis.img);
     mlx_destroy_image(Main->mp->mlx, Main->mp->map.img);
+	mlx_destroy_image(Main->mp->mlx, Main->mp->wall_W.img);
     mlx_destroy_window(Main->mp->mlx, Main->mp->win);
     free(Main->mp);
     free(Main->map);

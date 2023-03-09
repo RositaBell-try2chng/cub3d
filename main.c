@@ -77,10 +77,13 @@ int draw_frame(t_main *Main)
     turn(Main->pl);
     draw_back(Main, Main->pl, &Main->mp->map);
     draw_player(&Main->mp->map, Main->pl);
+//	printf("x = %zu, y = %zu, ang = %lf\n", Main->pl->x, Main->pl->y,
+//		   Main->pl->ang);
     cast_rays(Main, Main->pl);
     draw_direction(&Main->mp->map, Main->pl);
     mlx_put_image_to_window(Main->mp->mlx, Main->mp->win, Main->mp->vis.img, 0, 0);
-    mlx_put_image_to_window(Main->mp->mlx, Main->mp->win, Main->mp->map.img, 0, 0);
+    /*mlx_put_image_to_window(Main->mp->mlx, Main->mp->win, Main->mp->map.img,
+							 0, 0);*/
     return (0);
 }
 
@@ -154,7 +157,7 @@ void    imgs_init(t_main *M)
     M->mp->map.addr = get_data_img(&M->mp->map);
     M->mp->vis.img = mlx_new_image(M->mp->mlx, 1024, 768);
     M->mp->vis.addr = get_data_img(&M->mp->vis);
-    M->mp->wall_W.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_W.xpm", &M->mp->wall_W.w, &M->mp->wall_W.h);
+    M->mp->wall_W.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_E.xpm", &M->mp->wall_W.w, &M->mp->wall_W.h);
     M->mp->wall_W.addr = get_data_img(&M->mp->wall_W);
 }
 

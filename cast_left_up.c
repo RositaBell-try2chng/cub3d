@@ -60,8 +60,10 @@ double	cast_left_up(t_main *M, t_pl *pl, int cnt)
 	if ((resX <= resY && flg_correct_X) || !flg_correct_Y)
 	{
 		pl->wall_color[cnt] = WALL_E;
+		pl->hit_value[cnt] = set_hit_value(resX, fmod(pl->rays_ang[cnt], 90));
 		return (resX);
 	}
 	pl->wall_color[cnt] = WALL_S;
+	pl->hit_value[cnt] = set_hit_value(resY, 90 - fmod(pl->rays_ang[cnt], 90));
 	return (resY);
 }

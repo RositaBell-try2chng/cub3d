@@ -59,9 +59,11 @@ double	cast_right_down(t_main *M, t_pl *pl, int cnt)
 	resY = find_Y_wall(M, pl, cnt, &flg_correct_Y);
 	if ((resX <= resY && flg_correct_X) || !flg_correct_Y)
 	{
+		pl->hit_value[cnt] = set_hit_value(resX, fmod(pl->rays_ang[cnt], 90));
 		pl->wall_color[cnt] = WALL_W;
 		return (resX);
 	}
+	pl->hit_value[cnt] = set_hit_value(resY, 90 - fmod(pl->rays_ang[cnt], 90));
 	pl->wall_color[cnt] = WALL_N;
 	return (resY);
 }

@@ -22,16 +22,16 @@
 
 # define PI 3.14159265
 
+//magic numbers
+# define SCALE 32
+
 //minimap colors
 // ORGB opaqueness
 # define WALL_COLOR 0x800000FF
-//# define VOID_COLOR 0xFFFFFFFF
 # define FLOOR_COLOR 0x80FFFFFF
 # define PL_COLOR 0x8000FF00
 # define RAY_COLOR 0x80FF0000
-# define BLACK_COLOR 0x00000000
 # define GREY_COLOR  0x00808080
-# define SHADOW_COLOR 0x00404040
 
 //vision colors
 # define WALL_N 0x0000FFFF
@@ -55,6 +55,7 @@ typedef struct	s_player_data
 	double          rays_len[1024];
     double          rays_ang[1024];
     unsigned int    wall_color[1024];
+	double			hit_value[1024];
 } t_pl;
 
 typedef struct s_image
@@ -125,4 +126,12 @@ double	cast_right_up(t_main *M, t_pl *pl, int cnt);
 //cast_utils
 char	check_correct(t_main *M, double x, double y, char *flg);
 char	check_wall(t_main *M, double x, double y);
+
+//draws
+void    draw_vis(t_main *M, t_pl *pl, int cnt);
+
+//draws_utils
+unsigned int	get_pxl(t_main *M, double wall_h, int cnt, int h);
+unsigned int	*get_dst(t_img *img, int x, int y);
+double			set_hit_value(double res, double ang);
 #endif
