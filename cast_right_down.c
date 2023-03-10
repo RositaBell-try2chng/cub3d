@@ -1,6 +1,6 @@
 #include "cub.h"
 
-static double	find_X_wall(t_main *M, t_pl *pl, int cnt, char *flg)
+static double	find_X_wall(t_main *M, t_hit *hit, char *flg)
 {
 	double	newX;
 	double	newY;
@@ -8,11 +8,11 @@ static double	find_X_wall(t_main *M, t_pl *pl, int cnt, char *flg)
 	double	ang;
 
 	flg_wall = 0;
-	ang = fmod(pl->rays_ang[cnt], 90.0);
-	newX = (double)(((pl->x / 32) + 1) * 32.0);
+	ang = fmod(hit->ang, 90.0);
+	newX = (double)(((hit->pl_x / 32) + 1) * 32.0);
 	while (!flg_wall)
 	{
-		newY = pl->y + (newX - pl->x) * tan(ang * PI / 180.0);
+		newY = hit->pl_y + (newX - hit->pl_x) * tan(ang * PI / 180.0);
 		if (!check_correct(M, newX, newY, flg))
 			return (-1);
 		else if (check_wall(M, newX, newY))
@@ -20,10 +20,12 @@ static double	find_X_wall(t_main *M, t_pl *pl, int cnt, char *flg)
 		else
 			newX += 32.0;
 	}
-	return (sqrt(pow(newY - pl->y, 2) + pow(newX - pl->x, 2)));
+	hit->X_x = newX;
+	hit->X_y = newY;
+	return (sqrt(pow(newY - hit->pl_y, 2) + pow(newX - hit->pl_x, 2)));
 }
 
-static double	find_Y_wall(t_main *M, t_pl *pl, int cnt, char *flg)
+static double	find_Y_wall(t_main *M, t_hit *hit, char *flg)
 {
 	double	newX;
 	double	newY;
@@ -31,11 +33,11 @@ static double	find_Y_wall(t_main *M, t_pl *pl, int cnt, char *flg)
 	double	ang;
 
 	flg_wall = 0;
-	ang = 90.0 - fmod(pl->rays_ang[cnt], 90.0);
-	newY = (double)(((pl->y / 32) + 1) * 32.0);
+	ang = 90.0 - fmod(hit->ang, 90.0);
+	newY = (double)(((hit->pl_y / 32) + 1) * 32.0);
 	while (!flg_wall)
 	{
-		newX = pl->x + (newY - pl->y) * tan(ang * PI / 180.0);
+		newX = hit->pl_x + (newY - hit->pl_y) * tan(ang * PI / 180.0);
 		if (!check_correct(M, newX, newY, flg))
 			return (-1);
 		else if (check_wall(M, newX, newY))
@@ -43,10 +45,12 @@ static double	find_Y_wall(t_main *M, t_pl *pl, int cnt, char *flg)
 		else
 			newY += 32.0;
 	}
-	return (sqrt(pow(newY - pl->y, 2) + pow(newX - pl->x, 2)));
+	hit->Y_x = newX;
+	hit->Y_y = newY;
+	return (sqrt(pow(newY - hit->pl_y, 2) + pow(newX - hit->pl_x, 2)));
 }
 
-double	cast_right_down(t_main *M, t_pl *pl, int cnt)
+double	cast_right_down(t_main *M, t_hit *hit)
 {
 	double	resX;
 	double	resY;
@@ -55,15 +59,19 @@ double	cast_right_down(t_main *M, t_pl *pl, int cnt)
 
 	flg_correct_X = 1;
 	flg_correct_Y = 1;
-	resX = find_X_wall(M, pl, cnt, &flg_correct_X);
-	resY = find_Y_wall(M, pl, cnt, &flg_correct_Y);
+	resX = find_X_wall(M, hit, &flg_correct_X);
+	resY = find_Y_wall(M, hit, &flg_correct_Y);
+	if (!flg_correct_X && !flg_correct_Y)
+		exit(printf("incorrect flags\n"));
 	if ((resX <= resY && flg_correct_X) || !flg_correct_Y)
 	{
-		pl->hit_value[cnt] = set_hit_value(resX, fmod(pl->rays_ang[cnt], 90));
-		pl->wall_color[cnt] = WALL_W;
+		hit->hit_value = set_hit_value(resX, fmod(hit->ang, 90));
+		hit->side = &M->mp->wall_W;
+		hit->flg_wall = 'X';
 		return (resX);
 	}
-	pl->hit_value[cnt] = set_hit_value(resY, 90 - fmod(pl->rays_ang[cnt], 90));
-	pl->wall_color[cnt] = WALL_N;
+	hit->hit_value = set_hit_value(resY, 90 - fmod(hit->ang, 90));
+	hit->side = &M->mp->wall_N;
+	hit->flg_wall = 'Y';
 	return (resY);
 }

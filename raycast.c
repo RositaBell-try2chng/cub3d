@@ -5,43 +5,58 @@ double  math_need_len(double real, double ang)
 	return (real * sin((90.0 - ang) * PI / 180));
 }
 
-double  math_ray_len(t_main *M, t_pl *pl, int cnt, double ang)
+double  math_ray_len(t_main *M, t_hit *hit, double ang)
 {
 	if (fmod(ang, 90.0) == 0.0)
 	{
 		if (ang == 90.0 || ang == 270.0)
-			return (cast_vertical(M, pl, cnt, ang));
-		return (cast_horisontal(M, pl, cnt, ang));
+			return (cast_vertical(M, hit, ang));
+		return (cast_horisontal(M, hit, ang));
 	}
 	if ((ang > 0.0 && ang < 90.0) || ang > 360.0)
-		return (cast_right_down(M, pl, cnt));
+		return (cast_right_down(M, hit));
 	else if (ang > 90.0 && ang < 180.0)
-		return (cast_left_down(M, pl, cnt));
+		return (cast_left_down(M, hit));
 	else if (ang > 180.0 && ang < 270.0)
-		return (cast_left_up(M, pl, cnt));
-	return (cast_right_up(M, pl, cnt));
+		return (cast_left_up(M, hit));
+	return (cast_right_up(M, hit));
+}
+
+static void	prepare_hit(t_main *M, t_hit *hit)
+{
+	hit->ang = (M->pl->ang + ((double)hit->cnt * 30.0 / 1024.0) - 15.0);
+	if (hit->ang >= 360.0)
+		hit->ang -= 360.0;
+	else if (hit->ang < 0.0)
+		hit->ang += 360.0;
+	hit->len = 0.0;
+	hit->X_x = (double)M->pl->x;
+	hit->X_y = (double)M->pl->y;
+	hit->Y_x = (double)M->pl->x;
+	hit->Y_y = (double)M->pl->y;
+	hit->hit_value = 0.0;
+	hit->flg_wall = 0;
+	hit->side = &M->mp->wall_W;
+	hit->pl_x = M->pl->x;
+	hit->pl_y = M->pl->y;
 }
 
 void    cast_rays(t_main *M, t_pl *pl)
 {
-	int     cnt;
+	t_hit	hit;
 
-
-	cnt = 0;
-//	pl->x = 769;
-//	pl->y = 105;
-//	pl->ang = 6.0;
-	while (cnt < 1024)
+	hit.cnt = 0;
+//	pl->x = 812;
+//	pl->y = 61;
+//	pl->ang = 170.0;
+	while (hit.cnt < 1024)
 	{
-		pl->rays_ang[cnt] = (pl->ang + ((double)cnt * 30.0 / 1024.0) - 15.0);
-		if (pl->rays_ang[cnt] >= 360.0)
-			pl->rays_ang[cnt] -= 360.0;
-		else if (pl->rays_ang[cnt] < 0.0)
-			pl->rays_ang[cnt] += 360.0;
-		pl->rays_len[cnt] = 0;
-		pl->rays_len[cnt] = math_ray_len(M, pl, cnt, pl->rays_ang[cnt]);
-		pl->rays_len[cnt] *= sin((90 - fabs(pl->ang - pl->rays_ang[cnt])) * PI / 180);
-		draw_vis(M, pl, cnt);
-		cnt += 1;
+		prepare_hit(M, &hit);
+		hit.len = math_ray_len(M, &hit, hit.ang);
+		hit.len *= sin((90 - fabs(pl->ang - hit.ang)) * PI / 180);
+		if (hit.hit_value > 1.0)
+			printf("hitval = %lf\n", hit.hit_value);
+		draw_vis(M, &hit);
+		hit.cnt += 1;
 	}
 }

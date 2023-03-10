@@ -14,7 +14,7 @@ void    draw_player(t_img *map, t_pl *pl)
         j = -1;
         while (++j < 6)
         {
-            dst = map->addr + ((i + 249 - 2) * map->line_length + (j + 249 - 2) * (map->bits_per_pixel / 8));
+            dst = get_pxl_adr(map, j + 249 - 2, i + 249 - 2);
             *dst = PL_COLOR;
         }
     }
@@ -40,7 +40,7 @@ void draw_back(t_main *Main, t_pl *pl, t_img *map)
             if ((int)pl->x - 250 + x < 0 || ((int)pl->x - 250 + x) / 32 >= Main->map_W[(pl->y - 250 + y) / 32])
                 continue;
             c = Main->map[(pl->y - 250 + y) / 32][(pl->x - 250 + x) / 32];
-            dst = map->addr + (y * map->line_length + x * (map->bits_per_pixel / 8));
+            dst = get_pxl_adr(map, x, y);
             if (c == '1')
                 *dst = WALL_COLOR;
             else if (c == '0')
@@ -62,7 +62,7 @@ void    draw_direction(t_img *map, t_pl *pl)
     {
         k_x = ray_len * cos(pl->ang * PI / 180);
         k_y = ray_len * sin(pl->ang * PI / 180);
-        ray = map->addr + (((int) k_y + 249) * map->line_length + ((int) k_x + 249) * (map->bits_per_pixel / 8));
+        ray = get_pxl_adr(map, ((int) k_x + 249), ((int) k_y + 249));
         if (*ray == WALL_COLOR)
             break;
         else
@@ -71,19 +71,18 @@ void    draw_direction(t_img *map, t_pl *pl)
     }
 }
 
-int draw_frame(t_main *Main)
+int draw_frame(t_main *M)
 {
-    move(Main, Main->pl);
-    turn(Main->pl);
-    draw_back(Main, Main->pl, &Main->mp->map);
-    draw_player(&Main->mp->map, Main->pl);
+    move(M, M->pl);
+    turn(M->pl);
+    draw_back(M, M->pl, &M->mp->map);
+    draw_player(&M->mp->map, M->pl);
 //	printf("x = %zu, y = %zu, ang = %lf\n", Main->pl->x, Main->pl->y,
 //		   Main->pl->ang);
-    cast_rays(Main, Main->pl);
-    draw_direction(&Main->mp->map, Main->pl);
-    mlx_put_image_to_window(Main->mp->mlx, Main->mp->win, Main->mp->vis.img, 0, 0);
-    /*mlx_put_image_to_window(Main->mp->mlx, Main->mp->win, Main->mp->map.img,
-							 0, 0);*/
+    cast_rays(M, M->pl);
+    draw_direction(&M->mp->map, M->pl);
+    mlx_put_image_to_window(M->mp->mlx, M->mp->win, M->mp->vis.img, 0, 0);
+    mlx_put_image_to_window(M->mp->mlx, M->mp->win, M->mp->map.img, 0, 0);
     return (0);
 }
 
@@ -127,7 +126,7 @@ void    draw_full_vis(t_img *vis)
         j = -1;
         while (++j < 1024)
         {
-            dst = vis->addr + (i * vis->line_length + j * (vis->bits_per_pixel / 8)) ;
+            dst = get_pxl_adr(vis, j, i);
             *dst = GREY_COLOR;
         }
     }
@@ -145,7 +144,7 @@ void draw_full_back(t_img *map, int color)
         j = -1;
         while (++j < 500)
         {
-            dst = map->addr + i * map->line_length + j * (map->bits_per_pixel / 8);
+            dst = get_pxl_adr(map, j, i);
             *dst = color;
         }
     }
@@ -157,14 +156,20 @@ void    imgs_init(t_main *M)
     M->mp->map.addr = get_data_img(&M->mp->map);
     M->mp->vis.img = mlx_new_image(M->mp->mlx, 1024, 768);
     M->mp->vis.addr = get_data_img(&M->mp->vis);
-    M->mp->wall_W.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_E.xpm", &M->mp->wall_W.w, &M->mp->wall_W.h);
+    M->mp->wall_W.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_W.xpm", &M->mp->wall_W.w, &M->mp->wall_W.h);
     M->mp->wall_W.addr = get_data_img(&M->mp->wall_W);
+    M->mp->wall_E.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_E.xpm", &M->mp->wall_E.w, &M->mp->wall_E.h);
+    M->mp->wall_E.addr = get_data_img(&M->mp->wall_E);
+    M->mp->wall_N.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_N.xpm", &M->mp->wall_N.w, &M->mp->wall_N.h);
+    M->mp->wall_N.addr = get_data_img(&M->mp->wall_N);
+    M->mp->wall_S.img = mlx_xpm_file_to_image(M->mp->mlx, "texture/WALL_S.xpm", &M->mp->wall_S.w, &M->mp->wall_S.h);
+    M->mp->wall_S.addr = get_data_img(&M->mp->wall_S);
 }
 
 void game_play(t_main *Main)
 {
     Main->mp->mlx = mlx_init();
-    Main->mp->win = mlx_new_window(Main->mp->mlx, 1024, 768, "try");
+    Main->mp->win = mlx_new_window(Main->mp->mlx, 1024, 768, "cub3d");
     imgs_init(Main);
     draw_full_back(&Main->mp->map, WALL_COLOR);
     draw_full_vis(&Main->mp->vis);

@@ -10,7 +10,7 @@ static void    find_start_end(double wall_h, int *st, int *en)
 		(*en) = 768;
 }
 
-static void    draw_wall(t_main *M, t_pl *pl, int cnt)
+static void    draw_wall(t_main *M, t_hit *hit)
 {
 	int             wall_start;
 	int             wall_end;
@@ -18,8 +18,8 @@ static void    draw_wall(t_main *M, t_pl *pl, int cnt)
 	double			wall_h;
 	int				i;
 
-	wall_h = 768.0 * 8 / pl->rays_len[cnt];
-	if (pl->rays_len[cnt] <= 0.00001)
+	wall_h = 768.0 * 8 / hit->len;
+	if (hit->len <= 0.00001)
 	{
 		wall_start = 0;
 		wall_end = 768;
@@ -29,12 +29,12 @@ static void    draw_wall(t_main *M, t_pl *pl, int cnt)
 	i = -1;
 	while (++i + wall_start < wall_end)
 	{
-		dst = get_dst(&M->mp->vis, cnt, wall_start + i);
-		*dst = get_pxl(M, wall_h, cnt, i);
+		dst = get_pxl_adr(&M->mp->vis, hit->cnt, wall_start + i);
+		*dst = get_pxl(wall_h, hit, i);
 	}
 }
 
-void    draw_vis(t_main *M, t_pl *pl, int cnt)
+void    draw_vis(t_main *M, t_hit *hit)
 {
 	int             y;
 	unsigned int    *dst;
@@ -44,15 +44,15 @@ void    draw_vis(t_main *M, t_pl *pl, int cnt)
 	y = 0;
 	while (y < 384)
 	{
-		dst = get_dst(vis, cnt, y);
+		dst = get_pxl_adr(vis, hit->cnt, y);
 		*dst = UP_COLOR;
 		y++;
 	}
 	while (y < 768)
 	{
-		dst = get_dst(vis, cnt, y);
+		dst = get_pxl_adr(vis, hit->cnt, y);
 		*dst = DOWN_COLOR;
 		y++;
 	}
-	draw_wall(M, pl, cnt);
+	draw_wall(M, hit);
 }

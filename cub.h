@@ -52,10 +52,10 @@ typedef struct	s_player_data
     char            flg_move_a;
     char            flg_move_s;
     char            flg_move_d;
-	double          rays_len[1024];
+	/*double          rays_len[1024];
     double          rays_ang[1024];
     unsigned int    wall_color[1024];
-	double			hit_value[1024];
+	double			hit_value[1024];*/
 } t_pl;
 
 typedef struct s_image
@@ -92,6 +92,27 @@ typedef struct s_main
     t_pl    *pl;
 } t_main;
 
+typedef	struct	s_hit_values
+{
+	//x y пересечения
+	double	X_x;
+	double	X_y;
+	double	Y_x;
+	double	Y_y;
+	//дробная часть координаты и флаг стенки с которой столкнулись
+	double	hit_value; // drobnaya chast' x
+	char	flg_wall;
+	//ray_ang/len/cnt
+	double	ang;
+	double	len;
+	int		cnt;
+	//pointer to wall img
+	t_img	*side;
+	//pl values
+	size_t	pl_x;
+	size_t	pl_y;
+} t_hit;
+
 char	**ft_split(char const *s, char c);
 void	game_play(t_main *Main);
 int		draw_frame(t_main *Main);
@@ -111,27 +132,26 @@ int		check_walls_y(char **map, int x, int y, double one_speed);
 
 //raycast
 void    cast_rays(t_main *M, t_pl *pl);
-double  math_ray_len(t_main *M, t_pl *pl, int cnt, double ang);
-void	math_ray_len1(t_main *M, t_pl *pl, int cnt);
+double  math_ray_len(t_main *M, t_hit *hit, double ang);
 double  math_need_len(double real, double ang);
 
 //cast_func
-double	cast_horisontal(t_main *M, t_pl *pl, int cnt, double ang);
-double	cast_vertical(t_main *M, t_pl *pl, int cnt, double ang);
-double	cast_right_down(t_main *M, t_pl *pl, int cnt);
-double	cast_left_down(t_main *M, t_pl *pl, int cnt);
-double	cast_left_up(t_main *M, t_pl *pl, int cnt);
-double	cast_right_up(t_main *M, t_pl *pl, int cnt);
+double	cast_horisontal(t_main *M, t_hit *hit, double ang);
+double	cast_vertical(t_main *M, t_hit *hit, double ang);
+double	cast_right_down(t_main *M, t_hit *hit);
+double	cast_left_down(t_main *M, t_hit *hit);
+double	cast_left_up(t_main *M, t_hit *hit);
+double	cast_right_up(t_main *M, t_hit *hit);
 
 //cast_utils
 char	check_correct(t_main *M, double x, double y, char *flg);
 char	check_wall(t_main *M, double x, double y);
 
 //draws
-void    draw_vis(t_main *M, t_pl *pl, int cnt);
+void    draw_vis(t_main *M, t_hit *hit);
 
 //draws_utils
-unsigned int	get_pxl(t_main *M, double wall_h, int cnt, int h);
-unsigned int	*get_dst(t_img *img, int x, int y);
+unsigned int	get_pxl(double wall_h, t_hit *hit, int h);
+unsigned int	*get_pxl_adr(t_img *img, int x, int y);
 double			set_hit_value(double res, double ang);
 #endif
