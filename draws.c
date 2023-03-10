@@ -18,7 +18,7 @@ static void    draw_wall(t_main *M, t_hit *hit)
 	double			wall_h;
 	int				i;
 
-	wall_h = 768.0 * 8 / hit->len;
+	wall_h = 768.0 * 4 / hit->len;
 	if (hit->len <= 0.00001)
 	{
 		wall_start = 0;

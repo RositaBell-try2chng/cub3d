@@ -65,12 +65,10 @@ double	cast_right_down(t_main *M, t_hit *hit)
 		exit(printf("incorrect flags\n"));
 	if ((resX <= resY && flg_correct_X) || !flg_correct_Y)
 	{
-		hit->hit_value = set_hit_value(resX, fmod(hit->ang, 90));
 		hit->side = &M->mp->wall_W;
 		hit->flg_wall = 'X';
 		return (resX);
 	}
-	hit->hit_value = set_hit_value(resY, 90 - fmod(hit->ang, 90));
 	hit->side = &M->mp->wall_N;
 	hit->flg_wall = 'Y';
 	return (resY);

@@ -66,11 +66,9 @@ double	cast_left_down(t_main *M, t_hit *hit)
 	if ((resX <= resY && flg_correct_X) || !flg_correct_Y)
 	{
 		hit->side = &M->mp->wall_E;
-		hit->hit_value = set_hit_value(resX, 90 - fmod(hit->ang, 90));
 		hit->flg_wall = 'X';
 		return (resX);
 	}
-	hit->hit_value = set_hit_value(resY, fmod(hit->ang, 90));
 	hit->side = &M->mp->wall_N;
 	hit->flg_wall = 'Y';
 	return (resY);

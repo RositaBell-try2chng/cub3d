@@ -99,8 +99,7 @@ typedef	struct	s_hit_values
 	double	X_y;
 	double	Y_x;
 	double	Y_y;
-	//дробная часть координаты и флаг стенки с которой столкнулись
-	double	hit_value; // drobnaya chast' x
+	//флаг стенки с которой столкнулись X/Y
 	char	flg_wall;
 	//ray_ang/len/cnt
 	double	ang;

@@ -20,8 +20,6 @@ double	cast_horisontal(t_main *M, t_hit *hit, double ang)
 			break;
 		newX += 32.0 * sign;
 	}
-	hit->hit_value = (double)hit->pl_y / SCALE;
-	hit->hit_value -= floor(hit->hit_value);
 	hit->flg_wall = 'X';
 	hit->X_x = newX;
 	return (fabs(newX - hit->pl_x));
@@ -47,8 +45,6 @@ double	cast_vertical(t_main *M, t_hit *hit, double ang)
 			break;
 		newY += 32.0 * sign;
 	}
-	hit->hit_value = (double)hit->pl_x / SCALE;
-	hit->hit_value -= floor(hit->hit_value);
 	hit->flg_wall = 'Y';
 	hit->Y_y = newY;
 	return (fabs(newY - hit->pl_y));

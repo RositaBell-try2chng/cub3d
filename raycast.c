@@ -34,7 +34,6 @@ static void	prepare_hit(t_main *M, t_hit *hit)
 	hit->X_y = (double)M->pl->y;
 	hit->Y_x = (double)M->pl->x;
 	hit->Y_y = (double)M->pl->y;
-	hit->hit_value = 0.0;
 	hit->flg_wall = 0;
 	hit->side = &M->mp->wall_W;
 	hit->pl_x = M->pl->x;
@@ -54,8 +53,7 @@ void    cast_rays(t_main *M, t_pl *pl)
 		prepare_hit(M, &hit);
 		hit.len = math_ray_len(M, &hit, hit.ang);
 		hit.len *= sin((90 - fabs(pl->ang - hit.ang)) * PI / 180);
-		if (hit.hit_value > 1.0)
-			printf("hitval = %lf\n", hit.hit_value);
+		//printf("flg = %c\n", hit.flg_wall);
 		draw_vis(M, &hit);
 		hit.cnt += 1;
 	}
