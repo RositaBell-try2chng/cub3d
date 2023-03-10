@@ -152,5 +152,4 @@ void    draw_vis(t_main *M, t_hit *hit);
 //draws_utils
 unsigned int	get_pxl(double wall_h, t_hit *hit, int h);
 unsigned int	*get_pxl_adr(t_img *img, int x, int y);
-double			set_hit_value(double res, double ang);
 #endif

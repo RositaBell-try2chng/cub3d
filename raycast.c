@@ -45,15 +45,14 @@ void    cast_rays(t_main *M, t_pl *pl)
 	t_hit	hit;
 
 	hit.cnt = 0;
-//	pl->x = 812;
-//	pl->y = 61;
-//	pl->ang = 170.0;
+//	pl->x = 155;
+//	pl->y = 477;
+//	pl->ang = 60.0;
 	while (hit.cnt < 1024)
 	{
 		prepare_hit(M, &hit);
 		hit.len = math_ray_len(M, &hit, hit.ang);
 		hit.len *= sin((90 - fabs(pl->ang - hit.ang)) * PI / 180);
-		//printf("flg = %c\n", hit.flg_wall);
 		draw_vis(M, &hit);
 		hit.cnt += 1;
 	}
