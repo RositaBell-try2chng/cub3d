@@ -16,7 +16,7 @@ static void    draw_wall(t_main *M, t_hit *hit)
 	double			wall_h;
 	int				i;
 
-	wall_h = 768.0 * 32 / hit->len;
+	wall_h = 768.0 * 64 / hit->len;
 	find_start_end(wall_h, &wall_start, &wall_end);
 	i = -1;
 	while (++i + wall_start < wall_end)
