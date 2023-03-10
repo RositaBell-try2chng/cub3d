@@ -21,7 +21,6 @@ double	cast_horisontal(t_main *M, t_hit *hit, double ang)
 		newX += 32.0 * sign;
 	}
 	hit->flg_wall = 'X';
-	hit->X_x = newX;
 	return (fabs(newX - hit->pl_x));
 }
 
@@ -46,6 +45,5 @@ double	cast_vertical(t_main *M, t_hit *hit, double ang)
 		newY += 32.0 * sign;
 	}
 	hit->flg_wall = 'Y';
-	hit->Y_y = newY;
 	return (fabs(newY - hit->pl_y));
 }

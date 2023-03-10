@@ -20,7 +20,6 @@ static double	find_X_wall(t_main *M, t_hit *hit, char *flg)
 		else
 			newX += 32.0;
 	}
-	hit->X_x = newX;
 	hit->X_y = newY;
 	return (sqrt(pow(newY - hit->pl_y, 2) + pow(newX - hit->pl_x, 2)));
 }
@@ -46,7 +45,6 @@ static double	find_Y_wall(t_main *M, t_hit *hit, char *flg)
 			newY -= 32.0;
 	}
 	hit->Y_x = newX;
-	hit->Y_y = newY;
 	return (sqrt(pow(newY - hit->pl_y, 2) + pow(newX - hit->pl_x, 2)));
 }
 

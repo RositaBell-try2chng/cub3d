@@ -30,10 +30,8 @@ static void	prepare_hit(t_main *M, t_hit *hit)
 	else if (hit->ang < 0.0)
 		hit->ang += 360.0;
 	hit->len = 0.0;
-	hit->X_x = (double)M->pl->x;
 	hit->X_y = (double)M->pl->y;
 	hit->Y_x = (double)M->pl->x;
-	hit->Y_y = (double)M->pl->y;
 	hit->flg_wall = 0;
 	hit->side = &M->mp->wall_W;
 	hit->pl_x = M->pl->x;

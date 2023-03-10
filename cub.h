@@ -43,8 +43,8 @@
 
 typedef struct	s_player_data
 {
-    size_t			x;
-    size_t			y;
+	size_t			x;
+	size_t			y;
     double          ang;
     char            flg_trn_r;
     char            flg_trn_l;
@@ -52,10 +52,6 @@ typedef struct	s_player_data
     char            flg_move_a;
     char            flg_move_s;
     char            flg_move_d;
-	/*double          rays_len[1024];
-    double          rays_ang[1024];
-    unsigned int    wall_color[1024];
-	double			hit_value[1024];*/
 } t_pl;
 
 typedef struct s_image
@@ -95,10 +91,8 @@ typedef struct s_main
 typedef	struct	s_hit_values
 {
 	//x y пересечения
-	double	X_x;
 	double	X_y;
 	double	Y_x;
-	double	Y_y;
 	//флаг стенки с которой столкнулись X/Y
 	char	flg_wall;
 	//ray_ang/len/cnt
