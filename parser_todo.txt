@@ -6,7 +6,7 @@ t_main.{
 
 fd не нужен
 
-проверить экстеншн или нет
+проверить экстеншн
 
 t_mlx.{
     //для текстур стен
@@ -15,3 +15,12 @@ t_mlx.{
     t_img	wall_E;
     t_img	wall_W;
 }
+Check .cub
+
+Check invalid file
+
+Throw on unknown keys
+
+Throw on double keys
+
+Roll face on keyboard
