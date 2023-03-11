@@ -1,86 +1,11 @@
 #include "cub.h"
 
-// Minimap
-void    draw_player(t_img *map, t_pl *pl)
-{
-    int             i;
-    int             j;
-    unsigned int    *dst;
-    (void)pl;
-
-    i = -1;
-    while (++i < 6)
-    {
-        j = -1;
-        while (++j < 6)
-        {
-            dst = get_pxl_adr(map, j + 249 - 2, i + 249 - 2);
-            *dst = PL_COLOR;
-        }
-    }
-}
-
-// Minimap
-void draw_back(t_main *Main, t_pl *pl, t_img *map)
-{
-    int             y;
-    int             x;
-    char            c;
-    unsigned int    *dst;
-
-    y = -1;
-
-    while (++y < 500)
-    {
-        if ((int)pl->y - 250 + y < 0 || ((int)pl->y - 250 + y) / 32 >= Main->map_H)
-            continue;
-        x = -1;
-        while (++x < 500)
-        {
-            if ((int)pl->x - 250 + x < 0 || ((int)pl->x - 250 + x) / 32 >= Main->map_W[(pl->y - 250 + y) / 32])
-                continue;
-            c = Main->map[(pl->y - 250 + y) / 32][(pl->x - 250 + x) / 32];
-            dst = get_pxl_adr(map, x, y);
-            if (c == '1')
-                *dst = WALL_COLOR;
-            else if (c == '0')
-                *dst = FLOOR_COLOR;
-        }
-    }
-}
-
-// Minimap
-void    draw_direction(t_img *map, t_pl *pl)
-{
-    unsigned int    *ray;
-    double          k_x;
-    double          k_y;
-    size_t          ray_len;
-
-    ray_len = 0;
-    while (ray_len < 50)
-    {
-        k_x = ray_len * cos(pl->ang * PI / 180);
-        k_y = ray_len * sin(pl->ang * PI / 180);
-        ray = get_pxl_adr(map, ((int) k_x + 249), ((int) k_y + 249));
-        if (*ray == WALL_COLOR)
-            break;
-        else
-            *ray = RAY_COLOR;
-        ray_len++;
-    }
-}
-
 int draw_frame(t_main *M)
 {
     move(M, M->pl);
     turn(M->pl);
-    draw_back(M, M->pl, &M->mp->map);
-    draw_player(&M->mp->map, M->pl);
-//	printf("x = %zu, y = %zu, ang = %lf\n", Main->pl->x, Main->pl->y,
-//		   Main->pl->ang);
+    draw_minimap(M);
     cast_rays(M, M->pl);
-    draw_direction(&M->mp->map, M->pl);
     mlx_put_image_to_window(M->mp->mlx, M->mp->win, M->mp->vis.img, 0, 0);
     mlx_put_image_to_window(M->mp->mlx, M->mp->win, M->mp->map.img, 0, 0);
     return (0);
@@ -90,11 +15,12 @@ void parser(t_main *Main)
 {
     ssize_t i = 0;
     int  j;
-    char    all_file[1000];
+    char    *all_file = malloc(5000);
 
-    i = read(Main->fd, all_file, 1000);
+    i = read(Main->fd, all_file, 5000);
     all_file[i] = 0;
     Main->map = ft_split(all_file, '\n');
+    free(all_file);
     i = -1;
     while (Main->map[++i])
     {
@@ -132,27 +58,9 @@ void    draw_full_vis(t_img *vis)
     }
 }
 
-void draw_full_back(t_img *map, int color)
-{
-    int             i;
-    int             j;
-    unsigned int    *dst;
-
-    i = -1;
-    while (++i < 500)
-    {
-        j = -1;
-        while (++j < 500)
-        {
-            dst = get_pxl_adr(map, j, i);
-            *dst = color;
-        }
-    }
-}
-
 void    imgs_init(t_main *M)
 {
-    M->mp->map.img = mlx_new_image(M->mp->mlx, 500, 500);
+    M->mp->map.img = mlx_new_image(M->mp->mlx, M_SIZE, M_SIZE);
     M->mp->map.addr = get_data_img(&M->mp->map);
     M->mp->vis.img = mlx_new_image(M->mp->mlx, 1024, 768);
     M->mp->vis.addr = get_data_img(&M->mp->vis);
@@ -171,7 +79,6 @@ void game_play(t_main *Main)
     Main->mp->mlx = mlx_init();
     Main->mp->win = mlx_new_window(Main->mp->mlx, 1024, 768, "cub3d");
     imgs_init(Main);
-    draw_full_back(&Main->mp->map, WALL_COLOR);
     draw_full_vis(&Main->mp->vis);
     mlx_hook(Main->mp->win, 2, 1L << 0, ft_press, Main);
     mlx_hook(Main->mp->win, 3, 1L << 1, ft_release, Main);

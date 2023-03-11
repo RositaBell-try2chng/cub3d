@@ -25,6 +25,9 @@
 //magic numbers
 # define SCALE 32
 
+//minimap size
+# define M_SIZE 300
+# define M_HALF 150
 //minimap colors
 // ORGB opaqueness
 # define WALL_COLOR 0x800000FF
@@ -43,8 +46,8 @@
 
 typedef struct	s_player_data
 {
-	size_t			x;
-	size_t			y;
+	double			x;
+	double			y;
     double          ang;
     char            flg_trn_r;
     char            flg_trn_l;
@@ -83,7 +86,7 @@ typedef struct s_main
     t_mlx   *mp;
     char    **map;
     int     map_H;
-    int     map_W[50];
+    int     map_W[100];
     int     fd;
     t_pl    *pl;
 } t_main;
@@ -102,8 +105,8 @@ typedef	struct	s_hit_values
 	//pointer to wall img
 	t_img	*side;
 	//pl values
-	size_t	pl_x;
-	size_t	pl_y;
+	double	pl_x;
+	double	pl_y;
 } t_hit;
 
 char	**ft_split(char const *s, char c);
@@ -115,13 +118,10 @@ int		ft_press(int key, t_main *Main);
 int		ft_release(int key, t_main *Main);
 t_pl	*player_init(t_main *Main);
 t_pl	*save_position(t_main *Main, char C, int i, int j);
-void	turn(t_pl *pl);
 
 //move
 void	move(t_main *Main, t_pl *pl);
-void	move_frd(t_main *Main, t_pl *pl, double ang, int speed);
-int		check_walls_x(char **map, int x, int y, double one_speed);
-int		check_walls_y(char **map, int x, int y, double one_speed);
+void    turn(t_pl *pl);
 
 //raycast
 void    cast_rays(t_main *M, t_pl *pl);
@@ -146,4 +146,11 @@ void    draw_vis(t_main *M, t_hit *hit);
 //draws_utils
 unsigned int	get_pxl(double wall_h, t_hit *hit, int h);
 unsigned int	*get_pxl_adr(t_img *img, int x, int y);
+
+//draw minimap
+void	draw_minimap(t_main *M);
+char	check_border_minimap(t_main *M, int p, int c, int flg);
+
+//common_utils
+char	get_map_char(char **map, double y, double x);
 #endif
