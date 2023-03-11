@@ -4,3 +4,4 @@
 4. Продумать как текстуры скейлить.
 5. Norminette.
 6. Find and kill segfaults, bus errors, etc, write tests.
+7. Make should compile mlx for Linux and mb for MacOS too?
