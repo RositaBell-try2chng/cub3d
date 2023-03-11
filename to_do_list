@@ -1,4 +1,7 @@
 1. Проверка файла.
 2. Сделать парсер. Придумать динамич массив.
 3. Переделать 32 в  define SCALE.
-4. Продумать как текстуры скейлить
+4. Продумать как текстуры скейлить.
+5. Norminette.
+6. Find and kill segfaults, bus errors, etc, write tests.
+7. Make should compile mlx for Linux and mb for MacOS too?
