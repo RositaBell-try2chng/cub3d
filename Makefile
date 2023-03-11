@@ -9,7 +9,8 @@ NAME		= cub3d
 
 MLX			= mlx/
 
-CC			= clang
+LINUX_CC	= clang
+MACOS_CC	= cc
 
 RM			= rm -f
 
@@ -17,6 +18,11 @@ RM			= rm -f
 # Later: possible bug: are -framework libs or more like cflags?
 MACOS_LIBS = -lmlx -framework OpenGL -framework AppKit
 LINUX_LIBS = -Lmlx_linux -lXext -lX11 -lmlx
+
+
+CC			= \
+              	${if ${filter Linux, ${shell uname}}, ${LINUX_CC}} \
+              	${if ${filter Darwin, ${shell uname}}, ${MACOS_CC}}
 
 # Later: possible build optimization: add colon to force evaluation
 CFLAGS		= -Wall -Wextra -Werror -fsanitize=address -O2 \
