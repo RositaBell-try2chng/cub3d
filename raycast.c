@@ -24,7 +24,7 @@ double  math_ray_len(t_main *M, t_hit *hit, double ang)
 
 static void	prepare_hit(t_main *M, t_hit *hit)
 {
-	hit->ang = (M->pl->ang + ((double)hit->cnt * 30.0 / 1024.0) - 15.0);
+	hit->ang = (M->pl->ang + ((double)hit->cnt * 50.0 / 1024.0) - 25.0);
 	if (hit->ang >= 360.0)
 		hit->ang -= 360.0;
 	else if (hit->ang < 0.0)
