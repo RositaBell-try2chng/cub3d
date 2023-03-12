@@ -191,10 +191,30 @@ int cub_check_extension_or_die_test(char *path) {
 	cub_check_extension_or_die(path);
 }
 
+void cub_replace_spaces_with_ones(t_cub_line_list *lines) {
+	for (
+		t_cub_line_list *a_line_ptr = lines;
+		a_line_ptr != 0;
+		a_line_ptr = a_line_ptr->next
+	) {
+		for (
+			t_cub_char_list *a_char_ptr =
+				a_line_ptr->value;
+			a_char_ptr != 0;
+			a_char_ptr = a_char_ptr->next
+		) {
+			if (a_char_ptr->value == ' ')
+				a_char_ptr->value = '1';
+		}
+	}
+}
+
 int main_test(char *path) {
 	t_cub_conf conf = cub_parse(path);
 
 	t_cub_line_list *line_list_ptr = conf.lines;
+
+	cub_replace_spaces_with_ones(conf.lines);
 
 	{ t_cub_line_list tmp_line;
 	for (
