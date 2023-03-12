@@ -71,6 +71,7 @@ int main(int argc, char **argv) {
 	t_cub_line_list *line_list_ptr = 0;
 	// // There is always at least 1 line? What?
 	// t_cub_line_list *tmp_ptr = malloc(sizeof(t_cub_line_list));
+	// assert(tmp_ptr != 0);
 	// tmp_ptr->next = line_list_ptr;
 	// tmp_ptr->value = 0;
 	// tmp_ptr->length = 0;
@@ -84,28 +85,38 @@ int main(int argc, char **argv) {
 
 		char c = char_list_ptr->value;
 
-		switch (c) {
-		case '\n':
-			// // Ignore last newline. What?
-			// if (next_ptr == 0)
-			// 	break;
-			t_cub_line_list *tmp_ptr =
-				malloc(sizeof(t_cub_line_list));
-			tmp_ptr->next = line_list_ptr;
-			tmp_ptr->value = 0;
-			tmp_ptr->length = 0;
-			line_list_ptr = tmp_ptr;
-		break;
-		default: // Prepend char to curr char_list
-			t_cub_char_list *tmp_ptr_2 =
-				malloc(sizeof(t_cub_char_list));
+		if (ok) {
+			switch (c) {
+			case '\n':
+				// // Ignore last newline. What?
+				// if (next_ptr == 0)
+				// 	break;
+				t_cub_line_list *tmp_ptr =
+					malloc(sizeof(t_cub_line_list));
+				if (tmp_ptr == 0) {
+					ok = 0;
+					break;
+				}
+				tmp_ptr->next = line_list_ptr;
+				tmp_ptr->value = 0;
+				tmp_ptr->length = 0;
+				line_list_ptr = tmp_ptr;
+			break;
+			default: // Prepend char to curr char_list
+				t_cub_char_list *tmp_ptr_2 =
+					malloc(sizeof(t_cub_char_list));
+				if (tmp_ptr_2 == 0) {
+					ok = 0;
+					break;
+				}
 
-			tmp_ptr_2->next = line_list_ptr->value;
-			tmp_ptr_2->value = c;
+				tmp_ptr_2->next = line_list_ptr->value;
+				tmp_ptr_2->value = c;
 
-			line_list_ptr->value = tmp_ptr_2;
-			line_list_ptr->length++;
-		break;
+				line_list_ptr->value = tmp_ptr_2;
+				line_list_ptr->length++;
+			break;
+			}
 		}
 
 		free(char_list_ptr);
