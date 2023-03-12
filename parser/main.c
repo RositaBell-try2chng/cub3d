@@ -2,22 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
-
-typedef struct s_cub_char_list {
-	char value;
-	struct s_cub_char_list *next;
-} t_cub_char_list;
-
-typedef struct s_cub_line_list {
-	int length;
-	t_cub_char_list *value;
-	struct s_cub_line_list *next;
-} t_cub_line_list;
-
-// Result of a parse
-typedef struct {
-	t_cub_line_list *lines;
-} t_cub_conf;
+#include "main.h"
 
 void write1loop_or_die(int fd, char c) {
 	while (1) {
@@ -72,8 +57,6 @@ static void cub_check_extension_or_die(char *name) {
 	}
 }
 
-// Takes a file descriptor
-// Returns -1 on failure, 0 on end of file, read character otherwise
 int read1(int fd) {
 	int result;
 	char c;
@@ -85,9 +68,6 @@ int read1(int fd) {
 	return result;
 }
 
-// Takes a file descriptor
-// Dies on error
-// Returns -1 on end of file, read character otherwise
 int read1_or_die(int fd) {
 	int much_read = read1(fd);
 	if (much_read == 0)
@@ -167,8 +147,6 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 	return line_list_ptr;
 }
 
-// Input: path to .cub file
-// Output: death or valid conf
 t_cub_conf cub_parse(char *path) {
 	t_cub_conf conf;
 
