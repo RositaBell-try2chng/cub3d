@@ -1,3 +1,5 @@
+Assumption: there is no need to free everything on exit().
+
 Set of map characters: 0, 1, N, S, E, W, " ".
 
 N, S, E, W is where player is and his initial orientation.
