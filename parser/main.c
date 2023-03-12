@@ -19,17 +19,6 @@ typedef struct {
 	t_cub_line_list *lines;
 } t_cub_conf;
 
-// Fix me: not used
-static int cub_write(int fd, char c) {
-	while (1) {
-		int much_written = write(fd, &c, 1);
-		if (much_written == -1)
-			return -1;
-		if (much_written == 1)
-			return 1;
-	}
-}
-
 // Takes a file descriptor
 // Returns -1 on failure, 0 on end of file, read character otherwise
 int read1(int fd) {
