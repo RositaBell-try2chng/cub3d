@@ -24,14 +24,6 @@ static int cub_write(int fd, char c) {
 	}
 }
 
-/* static void cub_assert_write(int fd, char c) {
-	assert(cub_write(fd, c) != -1);
-}
-
-static void cub_assert_write_stdout(char c) {
-	cub_assert_write(STDOUT_FILENO, c);
-} */
-
 // Takes a file descriptor.
 // Returns -1 on failure, 0 on end of file, read character otherwise.
 int read1(int fd) {
@@ -87,43 +79,20 @@ void cub_parse(char *path) {
 	}
 	t_cub_char_list *char_list_ptr = 0;
 	while (1) {
-		int much_read = read1_or_die(fd);
-		if (much_read == -1) break;
+		int c = read1_or_die(fd);
+		if (c == -1) break;
 
 		t_cub_char_list *tmp_ptr =
 			malloc_or_die(sizeof(t_cub_char_list));
 		*tmp_ptr = (t_cub_char_list){
-			.value = much_read,
+			.value = c,
 			.next = char_list_ptr,
 		};
 
 		char_list_ptr = tmp_ptr;
 	}
 
-	/* if (char_list_ptr != 0) {
-		cub_assert_write_stdout('"');
-		cub_assert_write_stdout(char_list_ptr->value);
-		cub_assert_write_stdout('"');
-		if (char_list_ptr->next != 0) {
-			cub_assert_write_stdout('"');
-			cub_assert_write_stdout(
-				char_list_ptr->next->value
-			);
-			cub_assert_write_stdout('"');
-		}
-	}
-
-	cub_assert_write_stdout('\n'); */
-
 	t_cub_line_list *line_list_ptr = 0;
-
-	// // There is always at least 1 line? What?
-	// t_cub_line_list *tmp_ptr = malloc(sizeof(t_cub_line_list));
-	// assert(tmp_ptr != 0);
-	// tmp_ptr->next = line_list_ptr;
-	// tmp_ptr->value = 0;
-	// tmp_ptr->length = 0;
-	// line_list_ptr = tmp_ptr;
 
 	_Bool ok = 1;
 	// One dimension into two dimensions
@@ -137,10 +106,6 @@ void cub_parse(char *path) {
 		if (ok) {
 			switch (c) {
 			case '\n':
-				// // Ignore last newline. What?
-				// if (next_ptr == 0)
-				// 	break;
-
 				t_cub_line_list *tmp_ptr =
 					malloc_or_die(sizeof(t_cub_line_list));
 				*tmp_ptr = (t_cub_line_list){
