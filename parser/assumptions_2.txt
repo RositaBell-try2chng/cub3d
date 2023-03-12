@@ -24,3 +24,5 @@ Throw on unknown keys
 Throw on double keys
 
 Roll face on keyboard
+
+Add more user friendly error messages, perhaps

@@ -19,6 +19,59 @@ typedef struct {
 	t_cub_line_list *lines;
 } t_cub_conf;
 
+void write1loop_or_die(int fd, char c) {
+	while (1) {
+		int much_written = write(fd, &c, 1);
+		if (much_written == 1)
+			return;
+		if (much_written == -1) {
+			perror("Error\nwrite1loop_or_die");
+			exit(1);
+		}
+	}
+}
+
+void write_loop_or_die(int fd, char *s) {
+	for (char c = *s; c != 0; c = *++s) {
+		write1loop_or_die(fd, c);
+	}
+}
+
+_Bool are_strings_equal(char *s1, char *s2) {
+	while (*s1 && *s2) {
+		if (*s1 != *s2)
+			return 0;
+		s1++; s2++;
+	}
+	return *s1 == *s2;
+}
+
+static void cub_check_extension_or_die(char *name) {
+	char c;
+	// Parse until on dot
+	for (c = *name; c != 0 && c != '.'; c = *++name)
+		;
+	if (c == 0) {
+		write_loop_or_die(
+			2,
+			"Error\n"
+			"cub_check_extension_or_die: "
+			"no extension in file name\n"
+		);
+		exit(1);
+	}
+	name++;
+	if (!are_strings_equal(name, "cub")) {
+		write_loop_or_die(
+			2,
+			"Error\n"
+			"cub_check_extension_or_die: "
+			"extension is not “cub”\n"
+		);
+		exit(1);
+	}
+}
+
 // Takes a file descriptor
 // Returns -1 on failure, 0 on end of file, read character otherwise
 int read1(int fd) {
@@ -52,18 +105,6 @@ void *malloc_or_die(size_t size) {
 		exit(1);
 	}
 	return result;
-}
-
-void write1loop_or_die(int fd, char c) {
-	while (1) {
-		int much_written = write(fd, &c, 1);
-		if (much_written == 1)
-			return;
-		if (much_written == -1) {
-			perror("Error\nwrite1loop_or_die");
-			exit(1);
-		}
-	}
 }
 
 t_cub_char_list *cub_fd_to_char_list_ptr(int fd) {
@@ -131,6 +172,7 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 t_cub_conf cub_parse(char *path) {
 	t_cub_conf conf;
 
+	cub_check_extension_or_die(path);
 	int fd = open(path, O_RDONLY);
 	if (fd == -1) {
 		perror("Error\ncub_parse");
@@ -145,8 +187,12 @@ t_cub_conf cub_parse(char *path) {
 	return conf;
 }
 
-int main(int argc, char **argv) {
-	t_cub_conf conf = cub_parse(argv[1]);
+int cub_check_extension_or_die_test(char *path) {
+	cub_check_extension_or_die(path);
+}
+
+int main_test(char *path) {
+	t_cub_conf conf = cub_parse(path);
 
 	t_cub_line_list *line_list_ptr = conf.lines;
 
@@ -183,4 +229,8 @@ int main(int argc, char **argv) {
 		free(curr_line_ptr);
 		curr_line_ptr = &tmp_line;
 	} }
+}
+
+int main(int argc, char **argv) {
+	main_test(argv[1]);
 }
