@@ -109,6 +109,14 @@ typedef	struct	s_hit_values
 	double	pl_y;
 } t_hit;
 
+typedef struct	s_move
+{
+	char	**map;
+	t_pl	*pl;
+	double	ang;
+	int		speed;
+} t_move;
+
 char	**ft_split(char const *s, char c);
 void	game_play(t_main *Main);
 int		draw_frame(t_main *Main);

@@ -1,60 +1,61 @@
 #include "cub.h"
 
-static double	check_walls_x(char **map, double x, double y, double one_speed)
+static char	check_walls(char **map, double x, double y)
 {
-	double	tmp;
-	int	cnt;
-
-	cnt = -1;
-	while (++cnt < 3)
-	{
-		tmp = x - (one_speed * cnt);
-		if (get_map_char(map, y - 4, tmp - 4) != '1' && \
-			get_map_char(map, y - 4, tmp + 2) != '1' && \
-			get_map_char(map, y + 2, tmp + 2) != '1' && \
-			get_map_char(map, y + 2, tmp - 4) != '1')
-			return (tmp);
-	}
-	return (x - (one_speed * cnt));
+	if (get_map_char(map, y - 2, x - 2) == '1' || \
+		get_map_char(map, y - 2, x + 2) == '1' || \
+		get_map_char(map, y + 2, x + 2) == '1' || \
+		get_map_char(map, y + 2, x - 2) == '1')
+		return (1);
+	return (0);
 }
 
-static double	check_walls_y(char **map, double x, double y, double one_speed)
+static void	move_cnt_recursive(t_move *mv, char flg, char step)
 {
-	double	tmp;
-	int	cnt;
+	double	k;
 
-	cnt = -1;
-	while (++cnt < 3)
+	if (step == 6)
+		return;
+	if (flg == 'y')
 	{
-		tmp = y - (one_speed * cnt);
-		if (get_map_char(map, tmp - 4, x - 4) != '1' && \
-			get_map_char(map, tmp - 4, x + 2) != '1' && \
-			get_map_char(map, tmp + 2, x + 2) != '1' && \
-			get_map_char(map, tmp + 2, x - 4) != '1')
-			return (tmp);
+		k = mv->pl->y + (mv->speed * sin((mv->ang * PI) / 180));
+		if (!check_walls(mv->map, mv->pl->x, k))
+			mv->pl->y = k;
+		move_cnt_recursive(mv, 'x', step + 1);
 	}
-	return (y - (one_speed * cnt));
+	else if (flg == 'x')
+	{
+		k = mv->pl->x + (mv->speed * cos((mv->ang * PI) / 180));
+		if (!check_walls(mv->map, k, mv->pl->y))
+			mv->pl->x = k;
+		move_cnt_recursive(mv, 'y', step + 1);
+	}
 }
 
 static void	move_cnt(t_main *Main, t_pl *pl, double ang, int speed)
 {
-	double	x;
-	double	y;
+	t_move	mv;
 
-	x = pl->x + (3 * speed * cos((ang * PI) / 180));
-	y = pl->y + (3 * speed * sin((ang * PI) / 180));
+	mv.pl = pl;
+	mv.map = Main->map;
+	mv.ang = ang;
+	mv.speed = speed;
 	if (ang > 315.0 || ang <= 45 || (ang >= 135.0 && ang < 225.0))
-	{
-		y = check_walls_y(Main->map, x, y, speed * sin((ang * PI) / 180));
-		x = check_walls_x(Main->map, x, y, speed * cos((ang * PI) / 180));
-	}
+		move_cnt_recursive(&mv, 'y', 0);
 	else
-	{
-		x = check_walls_x(Main->map, x, y, speed * cos((ang * PI) / 180));
-		y = check_walls_y(Main->map, x, y, speed * sin((ang * PI) / 180));
-	}
-	pl->y = y;
-	pl->x = x;
+		move_cnt_recursive(&mv, 'x', 0);
+}
+
+void	move(t_main *Main, t_pl *pl)
+{
+	if (pl->flg_move_w == 1 && pl->flg_move_s == 0)
+		move_cnt(Main, pl, pl->ang, 1);
+	else if (pl->flg_move_w == 0 && pl->flg_move_s == 1)
+		move_cnt(Main, pl, pl->ang, -1);
+	if (pl->flg_move_a == 1 && pl->flg_move_d == 0)
+		move_cnt(Main, pl, pl->ang - 90.0, 1);
+	else if (pl->flg_move_a == 0 && pl->flg_move_d == 1)
+		move_cnt(Main, pl, pl->ang + 90.0, 1);
 }
 
 void    turn(t_pl *pl)
@@ -67,16 +68,4 @@ void    turn(t_pl *pl)
 		pl->ang -= 360;
 	if (pl->ang < 0)
 		pl->ang += 360;
-}
-
-void	move(t_main *Main, t_pl *pl)
-{
-	if (pl->flg_move_w == 1 && pl->flg_move_s == 0)
-		move_cnt(Main, pl, pl->ang, 1);
-	else if (pl->flg_move_w == 0 && pl->flg_move_s == 1)
-		move_cnt(Main, pl, pl->ang, -1);
-	if (pl->flg_move_a == 1 && pl->flg_move_d == 0)
-		move_cnt(Main, pl, pl->ang + 90.0, -1);
-	else if (pl->flg_move_a == 0 && pl->flg_move_d == 1)
-		move_cnt(Main, pl, pl->ang + 90.0, 1);
 }
