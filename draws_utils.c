@@ -1,5 +1,10 @@
 #include "cub.h"
 
+static double	get_diff_border(double k)
+{
+	return (k - floor(k / SCALE) * SCALE);
+}
+
 unsigned int	get_pxl(double wall_h, t_hit *hit, int h)
 {
 	double			k;
@@ -8,13 +13,13 @@ unsigned int	get_pxl(double wall_h, t_hit *hit, int h)
 
 	if (hit->flg_wall == 'Y')
 	{
-		x = (int)((hit->Y_x - floor(hit->Y_x / SCALE) * SCALE) / SCALE * hit->side->w);
+		x = (int)(get_diff_border(hit->y_x) / SCALE * hit->side->w);
 		k = wall_h / hit->side->h;
 		y = (int)((double)h / k);
 	}
 	else
 	{
-		y = (int)((hit->X_y - floor(hit->X_y / SCALE) * SCALE) / SCALE * hit->side->h);
+		y = (int)(get_diff_border(hit->x_y) / SCALE * hit->side->h);
 		k = wall_h / hit->side->w;
 		x = (int)((double)h / k);
 	}

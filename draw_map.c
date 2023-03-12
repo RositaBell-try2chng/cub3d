@@ -3,9 +3,9 @@
 // Minimap
 static void	draw_player(t_img *map)
 {
-	int             i;
-	int             j;
-	unsigned int    *dst;
+	int				i;
+	int				j;
+	unsigned int	*dst;
 
 	i = -1;
 	while (++i < 6)
@@ -22,22 +22,21 @@ static void	draw_player(t_img *map)
 // Minimap
 static void	draw_back(t_main *M, t_pl *pl, t_img *map)
 {
-	int             y;
-	int             x;
-	char            c;
-	unsigned int    *dst;
+	int				y;
+	int				x;
+	char			c;
+	unsigned int	*dst;
 
 	y = -1;
-
 	while (++y < M_SIZE)
 	{
 		if (check_border_minimap(M, pl->y, y, -1))
-			continue;
+			continue ;
 		x = -1;
 		while (++x < M_SIZE)
 		{
 			if (check_border_minimap(M, pl->x, x, y))
-				continue;
+				continue ;
 			c = get_map_char(M->map, pl->y - M_HALF + y, pl->x - M_HALF + x);
 			dst = get_pxl_adr(map, x, y);
 			if (c == '1')
@@ -63,7 +62,7 @@ static void	draw_direction(t_img *map, t_pl *pl, int k)
 		k_y = ray_len * sin(pl->ang * PI / 180);
 		ray = get_pxl_adr(map, ((int) k_x + k), ((int) k_y + k));
 		if (*ray == WALL_COLOR)
-			break;
+			break ;
 		else
 			*ray = RAY_COLOR;
 		ray_len += 0.5;
@@ -73,9 +72,9 @@ static void	draw_direction(t_img *map, t_pl *pl, int k)
 //minimap
 static void	draw_full_back(t_img *map, int color)
 {
-	int             i;
-	int             j;
-	unsigned int    *dst;
+	int				i;
+	int				j;
+	unsigned int	*dst;
 
 	i = -1;
 	while (++i < M_SIZE)

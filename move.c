@@ -15,7 +15,7 @@ static void	move_cnt_recursive(t_move *mv, char flg, char step)
 	double	k;
 
 	if (step == 6)
-		return;
+		return ;
 	if (flg == 'y')
 	{
 		k = mv->pl->y + (mv->speed * sin((mv->ang * PI) / 180));
@@ -58,7 +58,7 @@ void	move(t_main *Main, t_pl *pl)
 		move_cnt(Main, pl, pl->ang + 90.0, 1);
 }
 
-void    turn(t_pl *pl)
+void	turn(t_pl *pl)
 {
 	if (pl->flg_trn_r == 1 && pl->flg_trn_l == 0)
 		pl->ang += 3;

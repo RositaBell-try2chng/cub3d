@@ -1,11 +1,11 @@
 #include "cub.h"
 
-double  math_need_len(double real, double ang)
+double	math_need_len(double real, double ang)
 {
 	return (real * sin((90.0 - ang) * PI / 180));
 }
 
-double  math_ray_len(t_main *M, t_hit *hit, double ang)
+double	math_ray_len(t_main *M, t_hit *hit, double ang)
 {
 	if (fmod(ang, 90.0) == 0.0)
 	{
@@ -30,29 +30,24 @@ static void	prepare_hit(t_main *M, t_hit *hit)
 	else if (hit->ang < 0.0)
 		hit->ang += 360.0;
 	hit->len = 0.0;
-	hit->X_y = M->pl->y;
-	hit->Y_x = M->pl->x;
+	hit->x_y = M->pl->y;
+	hit->y_x = M->pl->x;
 	hit->flg_wall = 0;
 	hit->side = &M->mp->wall_W;
 	hit->pl_x = M->pl->x;
 	hit->pl_y = M->pl->y;
 }
 
-void    cast_rays(t_main *M, t_pl *pl)
+void	cast_rays(t_main *M, t_pl *pl)
 {
 	t_hit	hit;
 
 	hit.cnt = 0;
-//	pl->x = 155;
-//	pl->y = 477;
-//	pl->ang = 60.0;
 	while (hit.cnt < 1024)
 	{
 		prepare_hit(M, &hit);
 		hit.len = math_ray_len(M, &hit, hit.ang);
 		hit.len *= sin((90 - fabs(pl->ang - hit.ang)) * PI / 180);
-//		if (hit.cnt == 0)
-//			printf("len = %lf, flg = %c, ang = %lf\n", hit.len, hit.flg_wall, hit.ang);
 		draw_vis(M, &hit);
 		hit.cnt += 1;
 	}
