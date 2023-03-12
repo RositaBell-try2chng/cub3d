@@ -33,8 +33,8 @@ static void cub_assert_write_stdout(char c) {
 	cub_assert_write(STDOUT_FILENO, c);
 }
 
-int main(int argc, char **argv) {
-	int fd = open(argv[1], O_RDONLY);
+void cub_parse(char *path) {
+	int fd = open(path, O_RDONLY);
 	assert(fd != -1);
 	char c;
 	t_cub_char_list *char_list_ptr = 0;
@@ -122,6 +122,7 @@ int main(int argc, char **argv) {
 		free(char_list_ptr);
 		char_list_ptr = next_ptr;
 	}
+	t_cub_line_list tmp_line;
 	for (
 		t_cub_line_list *curr_line_ptr = line_list_ptr;
 		curr_line_ptr != 0;
@@ -131,6 +132,7 @@ int main(int argc, char **argv) {
 			"length: %d\n",
 			curr_line_ptr->length
 		); fflush(stdout);
+		t_cub_char_list tmp_list;
 		for (
 			t_cub_char_list *curr_char_ptr =
 				curr_line_ptr->value;
@@ -140,7 +142,18 @@ int main(int argc, char **argv) {
 			cub_assert_write_stdout(
 				curr_char_ptr->value
 			);
+			tmp_list = *curr_char_ptr;
+			free(curr_char_ptr);
+			curr_char_ptr = &tmp_list;
 		}
 		cub_assert_write_stdout('\n');
+		tmp_line = *curr_line_ptr;
+		free(curr_line_ptr);
+		curr_line_ptr = &tmp_line;
 	}
+	close(fd);
+}
+
+int main(int argc, char **argv) {
+	cub_parse(argv[1]);
 }
