@@ -1,33 +1,41 @@
-Assumption: there is no need to free everything on exit().
+Legend:
+	[x] -- checked
+	[?] -- irrelavant?
+	[ ] -- todo
+	[~] -- ok now but may be broken later
+	[%] -- partially implemented or fully?
+
+[x] Assumption: there is no need to free everything on exit().
 
 Set of map characters: 0, 1, N, S, E, W, " ".
 
 N, S, E, W is where player is and his initial orientation.
 
-There must be one player.
+[ ] There must be one player.
 
-Map must be enclosed in ones.
+[x] Map must be enclosed in ones.
 
-Parse errors look like this: "Error\nFoo bar\n".
+[%] Parse errors look like this: "Error\nFoo bar\n".
 
 Effectively, minimal map is 3x3.
 
-Map content is last.
+[ ] Map content is last.
 
-Other of config is not specified.
+[ ] Order of config is not specified.
 
-Config entries may be separated by newlines.
+[ ] Config entries may be separated by newlines.
 
-Config info in an entry may be separated by any amount of spaces.
+[ ] Config info in an entry may be separated by any amount of spaces.
 
-Simplification: space is handled as a one.
+[x] Simplification: space is handled as a one.
 
-Whether map is a rectangle or not is not specified.
+[x] Whether map is a rectangle or not is not specified.
 
 ? Newline at the end? Optional.
-Fix me: new lines are assumed.
+[x] Fix me: new lines are assumed.
 
 ? Nothing is said that config entries need to be terminated by newline.
+[?]
 
 ^NO ./path_to_foo
 ^SO path
