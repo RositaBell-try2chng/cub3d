@@ -23,6 +23,7 @@ Simplification: space is handled as a one.
 Whether map is a rectangle or not is not specified.
 
 ? Newline at the end? Optional.
+Fix me: new lines are assumed.
 
 ? Nothing is said that config entries need to be terminated by newline.
 
