@@ -14,6 +14,12 @@ typedef struct s_cub_line_list {
 	struct s_cub_line_list *next;
 } t_cub_line_list;
 
+// Result of a parse
+typedef struct {
+	t_cub_line_list *lines;
+} t_cub_conf;
+
+// Fix me: not used
 static int cub_write(int fd, char c) {
 	while (1) {
 		int much_written = write(fd, &c, 1);
@@ -24,8 +30,8 @@ static int cub_write(int fd, char c) {
 	}
 }
 
-// Takes a file descriptor.
-// Returns -1 on failure, 0 on end of file, read character otherwise.
+// Takes a file descriptor
+// Returns -1 on failure, 0 on end of file, read character otherwise
 int read1(int fd) {
 	int result;
 	char c;
@@ -37,9 +43,9 @@ int read1(int fd) {
 	return result;
 }
 
-// Takes a file descriptor.
-// Dies on error.
-// Returns -1 on end of file, read character otherwise.
+// Takes a file descriptor
+// Dies on error
+// Returns -1 on end of file, read character otherwise
 int read1_or_die(int fd) {
 	int much_read = read1(fd);
 	if (much_read == 0)
@@ -71,12 +77,7 @@ void write1loop_or_die(int fd, char c) {
 	}
 }
 
-void cub_parse(char *path) {
-	int fd = open(path, O_RDONLY);
-	if (fd == -1) {
-		perror("Error\ncub_parse");
-		exit(1);
-	}
+t_cub_char_list *cub_fd_to_char_list_ptr(int fd) {
 	t_cub_char_list *char_list_ptr = 0;
 	while (1) {
 		int c = read1_or_die(fd);
@@ -91,11 +92,14 @@ void cub_parse(char *path) {
 
 		char_list_ptr = tmp_ptr;
 	}
+	// Close here since resource is consumed
+	close(fd);
+	return char_list_ptr;
+}
 
+t_cub_line_list *
+cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 	t_cub_line_list *line_list_ptr = 0;
-
-	_Bool ok = 1;
-	// One dimension into two dimensions
 	while (1) {
 		if (char_list_ptr == 0)
 			break;
@@ -103,35 +107,60 @@ void cub_parse(char *path) {
 
 		char c = char_list_ptr->value;
 
-		if (ok) {
-			switch (c) {
-			case '\n':
-				t_cub_line_list *tmp_ptr =
-					malloc_or_die(sizeof(t_cub_line_list));
-				*tmp_ptr = (t_cub_line_list){
-					.next = line_list_ptr,
-					.value = 0,
-					.length = 0,
-				};
-				line_list_ptr = tmp_ptr;
-			break;
-			default: // Prepend char to curr char_list
-				t_cub_char_list *tmp_ptr_2 =
-					malloc_or_die(sizeof(t_cub_char_list));
+		switch (c) {
+		case '\n':
+			t_cub_line_list *tmp_ptr =
+				malloc_or_die(sizeof(t_cub_line_list));
+			*tmp_ptr = (t_cub_line_list){
+				.next = line_list_ptr,
+				.value = 0,
+				.length = 0,
+			};
+			line_list_ptr = tmp_ptr;
+		break;
+		default: // Prepend char to curr char_list
+			t_cub_char_list *tmp_ptr_2 =
+				malloc_or_die(sizeof(t_cub_char_list));
 
-				*tmp_ptr_2 = (t_cub_char_list){
-					.next = line_list_ptr->value,
-					.value = c,
-				};
-				line_list_ptr->value = tmp_ptr_2;
-				line_list_ptr->length++;
-			break;
-			}
+			*tmp_ptr_2 = (t_cub_char_list){
+				.next = line_list_ptr->value,
+				.value = c,
+			};
+			line_list_ptr->value = tmp_ptr_2;
+			line_list_ptr->length++;
+		break;
 		}
 
 		free(char_list_ptr);
 		char_list_ptr = next_ptr;
 	}
+	return line_list_ptr;
+}
+
+// Input: path to .cub file
+// Output: death or valid conf
+t_cub_conf cub_parse(char *path) {
+	t_cub_conf conf;
+
+	int fd = open(path, O_RDONLY);
+	if (fd == -1) {
+		perror("Error\ncub_parse");
+		exit(1);
+	}
+
+	t_cub_char_list *char_list_ptr = cub_fd_to_char_list_ptr(fd);
+
+	t_cub_line_list *line_list_ptr = cub_char_list_ptr_to_line_list_ptr(char_list_ptr);
+
+	conf.lines = line_list_ptr;
+	return conf;
+}
+
+int main(int argc, char **argv) {
+	t_cub_conf conf = cub_parse(argv[1]);
+
+	t_cub_line_list *line_list_ptr = conf.lines;
+
 	{ t_cub_line_list tmp_line;
 	for (
 		t_cub_line_list *curr_line_ptr = line_list_ptr;
@@ -165,9 +194,4 @@ void cub_parse(char *path) {
 		free(curr_line_ptr);
 		curr_line_ptr = &tmp_line;
 	} }
-	close(fd);
-}
-
-int main(int argc, char **argv) {
-	cub_parse(argv[1]);
 }
