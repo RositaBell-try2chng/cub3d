@@ -162,6 +162,11 @@ t_cub_conf cub_parse(char *path) {
 	t_cub_line_list *line_list_ptr = cub_char_list_ptr_to_line_list_ptr(char_list_ptr);
 
 	conf.lines = line_list_ptr;
+
+	cub_replace_spaces_with_ones(conf.lines);
+
+	cub_check_map_frame_or_die(conf.lines);
+
 	return conf;
 }
 
@@ -187,12 +192,93 @@ void cub_replace_spaces_with_ones(t_cub_line_list *lines) {
 	}
 }
 
+void error_die(char *message) {
+	write_loop_or_die(2, "Error\n");
+	write_loop_or_die(2, message);
+	write_loop_or_die(2, "\n");
+	exit(1);
+}
+
+void true_or_error_die(_Bool condition, char *message) {
+	if (!condition) {
+		error_die(message);
+	}
+}
+
+void cub_debug_print_map(t_cub_line_list *lines) {
+	for (
+		t_cub_line_list *a_line_ptr = lines;
+		a_line_ptr != 0;
+		a_line_ptr = a_line_ptr->next
+	) {
+		for (
+			t_cub_char_list *a_char_ptr =
+				a_line_ptr->value;
+			a_char_ptr != 0;
+			a_char_ptr = a_char_ptr->next
+		) {
+			write1loop_or_die(
+				2,
+				a_char_ptr->value
+			);
+		}
+		write1loop_or_die(2, '\n');
+	}
+}
+
+void cub_check_map_frame_or_die(t_cub_line_list *lines) {
+	_Bool first_row = 1;
+	_Bool last_row;
+	for (
+		t_cub_line_list *a_line_ptr = lines;
+		a_line_ptr != 0;
+		a_line_ptr = a_line_ptr->next
+	) {
+		last_row = a_line_ptr->next == 0;
+		// Check rows
+		if (first_row || last_row) {
+			for (
+				t_cub_char_list *a_char_ptr =
+					a_line_ptr->value;
+				a_char_ptr != 0;
+				a_char_ptr = a_char_ptr->next
+			) {
+				true_or_error_die(
+					a_char_ptr->value == '1',
+					"check_map_frame_or_die: "
+					"map is not framed "
+					"horizontally"
+				);
+			}
+		}
+		_Bool first_column = 1;
+		_Bool last_column;
+		// Check columns
+		for (
+			t_cub_char_list *a_char_ptr =
+				a_line_ptr->value;
+			a_char_ptr != 0;
+			a_char_ptr = a_char_ptr->next
+		) {
+			last_column = a_char_ptr->next == 0;
+			if (first_column || last_column) {
+				true_or_error_die(
+					a_char_ptr->value == '1',
+					"check_map_frame_or_die: "
+					"map is not framed "
+					"vertically"
+				);
+			}
+			first_column = 0;
+		}
+		first_row = 0;
+	}
+}
+
 int main_test(char *path) {
 	t_cub_conf conf = cub_parse(path);
 
 	t_cub_line_list *line_list_ptr = conf.lines;
-
-	cub_replace_spaces_with_ones(conf.lines);
 
 	{ t_cub_line_list tmp_line;
 	for (
@@ -200,10 +286,10 @@ int main_test(char *path) {
 		curr_line_ptr != 0;
 		curr_line_ptr = curr_line_ptr->next
 	) {
-		printf(
+		/* printf(
 			"length: %d\n",
 			curr_line_ptr->length
-		); fflush(stdout);
+		); fflush(stdout); */
 		{ t_cub_char_list tmp_list;
 		for (
 			t_cub_char_list *curr_char_ptr =

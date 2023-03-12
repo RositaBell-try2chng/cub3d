@@ -36,3 +36,4 @@ int cub_check_extension_or_die_test(char *path);
 void cub_replace_spaces_with_ones(t_cub_line_list *lines);
 int main_test(char *path);
 int main(int argc, char **argv);
+void cub_check_map_frame_or_die(t_cub_line_list *lines);
