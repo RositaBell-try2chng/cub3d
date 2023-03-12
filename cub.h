@@ -94,8 +94,8 @@ typedef struct s_main
 typedef	struct	s_hit_values
 {
 	//x y пересечения
-	double	X_y;
-	double	Y_x;
+	double	x_y;
+	double	y_x;
 	//флаг стенки с которой столкнулись X/Y
 	char	flg_wall;
 	//ray_ang/len/cnt
