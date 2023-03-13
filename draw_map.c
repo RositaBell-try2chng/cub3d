@@ -20,7 +20,7 @@ static void	draw_player(t_img *map)
 }
 
 // Minimap
-static void	draw_back(t_main *M, t_pl *pl, t_img *map)
+static void	draw_no_walls_back(t_main *M, t_pl *pl, t_img *map)
 {
 	int				y;
 	int				x;
@@ -39,9 +39,7 @@ static void	draw_back(t_main *M, t_pl *pl, t_img *map)
 				continue ;
 			c = get_map_char(M->map, pl->y - M_HALF + y, pl->x - M_HALF + x);
 			dst = get_pxl_adr(map, x, y);
-			if (c == '1')
-				*dst = WALL_COLOR;
-			else if (c == '0')
+			if (c == '0')
 				*dst = FLOOR_COLOR;
 		}
 	}
@@ -90,14 +88,8 @@ static void	draw_full_back(t_img *map, int color)
 
 void	draw_minimap(t_main *M)
 {
-	static char	flg;
-
-	if (!flg)
-	{
-		draw_full_back(&M->mp->map, WALL_COLOR);
-		flg = 1;
-	}
-	draw_back(M, M->pl, &M->mp->map);
+	draw_full_back(&M->mp->map, WALL_COLOR);
+	draw_no_walls_back(M, M->pl, &M->mp->map);
 	draw_player(&M->mp->map);
 	draw_direction(&M->mp->map, M->pl, M_HALF - 1);
 }

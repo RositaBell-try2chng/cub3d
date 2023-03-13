@@ -130,6 +130,10 @@ t_pl	*save_position(t_main *Main, char C, int i, int j);
 //move
 void	move(t_main *Main, t_pl *pl);
 void    turn(t_pl *pl);
+//move_utils
+char	check_walls(char **map, double x, double y);
+void	move_cnt_recursive(t_move *mv, char flg, char step);
+void	move_cnt(t_main *Main, t_pl *pl, double ang, int speed);
 
 //raycast
 void    cast_rays(t_main *M, t_pl *pl);
