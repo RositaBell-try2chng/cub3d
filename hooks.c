@@ -28,9 +28,9 @@ int	ft_press(int key, t_main *Main)
 	else if (key == W)
 		Main->pl->flg_move_w = 1;
 	else if (key == A)
-		Main->pl->flg_move_a = 1;
+		Main->pl->flg_move_a = -1;
 	else if (key == S)
-		Main->pl->flg_move_s = 1;
+		Main->pl->flg_move_s = -1;
 	else if (key == D)
 		Main->pl->flg_move_d = 1;
 	else if (key == RIGHT_ARROW)
