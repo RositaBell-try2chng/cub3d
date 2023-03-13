@@ -118,7 +118,7 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 		char c = char_list_ptr->value;
 
 		switch (c) {
-		case '\n':
+		case '\n': {
 			t_cub_line_list *tmp_ptr =
 				malloc_or_die(sizeof(t_cub_line_list));
 			*tmp_ptr = (t_cub_line_list){
@@ -127,8 +127,8 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 				.length = 0,
 			};
 			line_list_ptr = tmp_ptr;
-		break;
-		default: // Prepend char to curr char_list
+		} break;
+		default: { // Prepend char to curr char_list
 			t_cub_char_list *tmp_ptr_2 =
 				malloc_or_die(sizeof(t_cub_char_list));
 
@@ -138,7 +138,7 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 			};
 			line_list_ptr->value = tmp_ptr_2;
 			line_list_ptr->length++;
-		break;
+		} break;
 		}
 
 		free(char_list_ptr);
