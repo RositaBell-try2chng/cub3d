@@ -32,6 +32,7 @@ static void	prepare_hit(t_main *M, t_hit *hit)
 	hit->len = 0.0;
 	hit->x_y = M->pl->y;
 	hit->y_x = M->pl->x;
+	hit->pl_ang = M->pl->ang;
 	hit->flg_wall = 0;
 	hit->side = &M->mp->wall_W;
 	hit->pl_x = M->pl->x;
