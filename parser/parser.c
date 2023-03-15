@@ -1,9 +1,9 @@
+#include "../cub.h"
+#include "parser.h"
+
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
-
-#include "../cub.h"
-#include "parser.h"
 
 void write1loop_or_die(int fd, char c) {
 	while (1) {
