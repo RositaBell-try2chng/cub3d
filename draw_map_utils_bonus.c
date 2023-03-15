@@ -1,7 +1,25 @@
 #include "cub.h"
 
+char	check_border_minimap(t_main *M, int p, int c, int flg)
+{
+	int	res;
+	int	dop;
+
+	res = p - M_HALF + c;
+	if (flg == -1)
+	{
+		if (res < 0 || res / 32 >= M->map_H)
+			return (1);
+		return (0);
+	}
+	dop = M->pl->y - M_HALF + flg;
+	if (res < 0 || (res) / 32 >= M->map_W[dop / 32])
+		return (1);
+	return (0);
+}
+
 // Minimap
-static void	draw_player(t_img *map)
+void	draw_player(t_img *map)
 {
 	int				i;
 	int				j;
@@ -20,7 +38,7 @@ static void	draw_player(t_img *map)
 }
 
 // Minimap
-static void	draw_no_walls_back(t_main *M, t_pl *pl, t_img *map)
+void	draw_no_walls_back(t_main *M, t_pl *pl, t_img *map)
 {
 	int				y;
 	int				x;
@@ -46,7 +64,7 @@ static void	draw_no_walls_back(t_main *M, t_pl *pl, t_img *map)
 }
 
 // Minimap
-static void	draw_direction(t_img *map, t_pl *pl, int k)
+void	draw_direction(t_img *map, t_pl *pl, int k)
 {
 	unsigned int	*ray;
 	double			k_x;
@@ -68,7 +86,7 @@ static void	draw_direction(t_img *map, t_pl *pl, int k)
 }
 
 //minimap
-static void	draw_full_back(t_img *map, int color)
+void	draw_full_back(t_img *map, int color)
 {
 	int				i;
 	int				j;
@@ -84,12 +102,4 @@ static void	draw_full_back(t_img *map, int color)
 			*dst = color;
 		}
 	}
-}
-
-void	draw_minimap(t_main *M)
-{
-	draw_full_back(&M->mp->map, WALL_COLOR);
-	draw_no_walls_back(M, M->pl, &M->mp->map);
-	draw_player(&M->mp->map);
-	draw_direction(&M->mp->map, M->pl, M_HALF - 1);
 }

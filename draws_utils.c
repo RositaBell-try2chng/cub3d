@@ -25,8 +25,6 @@ unsigned int	get_pxl(double wall_h, t_hit *hit, int h)
 	}
 	k = wall_h / hit->side->h;
 	y = (int)((double)h / k);
-	if (x >= 64 || y >= 64)
-		printf("x = %d, y = %d, flg = %c\n", x, y, hit->flg_wall);
 	return (*get_pxl_adr(hit->side, x, y));
 }
 

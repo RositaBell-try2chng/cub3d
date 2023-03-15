@@ -1,15 +1,26 @@
-SRCS		= main.c ft_split.c hooks.c raycast.c casts_utils.c \
-				cast_horisontal_vertical.c cast_left_down.c cast_left_up.c cast_right_down.c cast_right_up.c \
-				draws.c draws_utils.c \
-				draw_map.c draw_map_utils.c \
-				common_utils.c \
-				move.c move_utils.c
+COMMON_SRCS	= main.c ft_split.c raycast.c casts_utils.c \
+              cast_horisontal_vertical.c cast_left_down.c cast_left_up.c cast_right_down.c cast_right_up.c \
+              draws_utils.c \
+              common_utils.c \
+              move.c move_utils.c \
+              game_play.c
 
-OBJS		= ${SRCS:.c=.o}
+SRCS_NO_BON	= ${COMMON_SRCS} draws.c init.c hooks.c
+
+SRCS_BON	= ${COMMON_SRCS} draws_bonus.c init_bonus.c hooks_bonus.c \
+								draw_map_bonus.c draw_map_utils_bonus.c
+
+OBJS		= ${SRCS_NO_BON:.c=.o}
+
+OBJS_BON	= ${SRCS_BON:.c=.o}
 
 HEAD		= cub.h
 
-NAME		= cub3d
+HEAD_BON	= cub_bonus.h
+
+NAME		= cub3D
+
+NAME_BON	= cub3D_bonus
 
 MLX			= mlx/
 
@@ -45,12 +56,29 @@ all:		${NAME}
 ${NAME}:	${OBJS}
 			${CC} ${CFLAGS} ${OBJS} ${LIBS} -o ${NAME}
 
-clean:
-			${RM} ${OBJS}
+bonus:		${NAME_BON}
 
-fclean:		clean
+${NAME_BON}:	${OBJS_BON}
+				${CC} ${CFLAGS} ${OBJS_BON} ${LIBS} -o ${NAME_BON}
+
+clean_m:
+				${RM} ${OBJS}
+
+clean_b:
+				${RM} ${OBJS_BON}
+
+clean:		clean_m clean_b
+
+fclean_m:	clean_m
 			${RM} ${NAME}
 
-re:			fclean all
+fclean_b:	clean_b
+			${RM} ${NAME_BON}
 
-.PHONY:		all clean fclean re
+fclean:		clean_m clean_b
+
+re_b:		fclean_b bonus
+
+re:			fclean_m fclean_b all
+
+.PHONY:		all clean_m clean_b clean fclean_m fclean_b fclean re_b re bonus

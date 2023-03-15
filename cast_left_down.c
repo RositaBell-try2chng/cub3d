@@ -1,6 +1,6 @@
 #include "cub.h"
 
-static double	find_x_wall(t_main *M, t_hit *hit, char *flg)
+static double	find_x_wall(t_main *m, t_hit *hit, char *flg)
 {
 	double	new_x;
 	double	new_y;
@@ -13,9 +13,9 @@ static double	find_x_wall(t_main *M, t_hit *hit, char *flg)
 	while (!flg_wall)
 	{
 		new_y = hit->pl_y + (hit->pl_x - new_x) * tan(ang * PI / 180.0);
-		if (!check_correct(M, new_x, new_y, flg))
+		if (!check_correct(m, new_x, new_y, flg))
 			return (-1);
-		else if (check_wall(M, new_x, new_y))
+		else if (check_wall(m, new_x, new_y))
 			flg_wall = 1;
 		else
 			new_x -= 32.0;
@@ -24,7 +24,7 @@ static double	find_x_wall(t_main *M, t_hit *hit, char *flg)
 	return (sqrt(pow(new_y - hit->pl_y, 2) + pow(new_x - hit->pl_x, 2)));
 }
 
-static double	find_y_wall(t_main *M, t_hit *hit, char *flg)
+static double	find_y_wall(t_main *m, t_hit *hit, char *flg)
 {
 	double	new_x;
 	double	new_y;
@@ -37,9 +37,9 @@ static double	find_y_wall(t_main *M, t_hit *hit, char *flg)
 	while (!flg_wall)
 	{
 		new_x = hit->pl_x - (new_y - hit->pl_y) * tan(ang * PI / 180.0);
-		if (!check_correct(M, new_x, new_y, flg))
+		if (!check_correct(m, new_x, new_y, flg))
 			return (-1);
-		else if (check_wall(M, new_x, new_y))
+		else if (check_wall(m, new_x, new_y))
 			flg_wall = 1;
 		else
 			new_y += 32.0;
@@ -48,7 +48,7 @@ static double	find_y_wall(t_main *M, t_hit *hit, char *flg)
 	return (sqrt(pow(new_y - hit->pl_y, 2) + pow(new_x - hit->pl_x, 2)));
 }
 
-double	cast_left_down(t_main *M, t_hit *hit)
+double	cast_left_down(t_main *m, t_hit *hit)
 {
 	double	res_x;
 	double	res_y;
@@ -57,17 +57,17 @@ double	cast_left_down(t_main *M, t_hit *hit)
 
 	flg_correct_x = 1;
 	flg_correct_y = 1;
-	res_x = find_x_wall(M, hit, &flg_correct_x);
-	res_y = find_y_wall(M, hit, &flg_correct_y);
+	res_x = find_x_wall(m, hit, &flg_correct_x);
+	res_y = find_y_wall(m, hit, &flg_correct_y);
 	if (!flg_correct_x && !flg_correct_y)
 		exit(printf("incorrect flags\n"));
 	if ((res_x <= res_y && flg_correct_x) || !flg_correct_y)
 	{
-		hit->side = &M->mp->wall_E;
+		hit->side = &m->mp->wall_e;
 		hit->flg_wall = 'X';
 		return (res_x);
 	}
-	hit->side = &M->mp->wall_N;
+	hit->side = &m->mp->wall_n;
 	hit->flg_wall = 'Y';
 	return (res_y);
 }
