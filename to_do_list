@@ -5,3 +5,4 @@
 5. Norminette.
 6. Find and kill segfaults, bus errors, etc, write tests.
 7. Make should compile mlx for Linux and mb for MacOS too?
+8. Rolling face on keyboard must not crash cub

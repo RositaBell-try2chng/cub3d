@@ -1,0 +1,60 @@
+Assumption: there is no need to free everything on exit()
+
+Valid map characters must be in set '0', '1', 'N', 'S', 'E', 'W', ' '
+
+'N', 'S', 'E' or 'W' determine player initial position and orientation
+
+To-do: there must be exactly one player
+
+Test me: “The map must be closed/surrounded by walls”. Test me: current rules:
+
+	Top must be 1
+	Bottom must be 1
+	Left side must exist and be 1
+	Right side must be 1 and “cliffs” must be 1
+	Lines may not be empty
+
+To-do: map content must be last
+
+To-do: order of other config entries is not specified
+
+To-do: config entries must be separated by any count of newlines greater than 0
+
+To-do: config element in an entry must be separated by any natural number of spaces ' ', including zero
+
+Simplification: spaces in map are handled as ones. 
+
+Whether map is a rectangle or not is not specified
+
+Simplification: newline at the end of config is expected
+
+Note: nothing is said that config entries must be terminated by newlines
+
+To-do: NO(rth), SO(uth), WE(st), EA(st), F(loor), C(eiling):
+
+	^(NO|SO|WE|EA)( )*${path}
+	^(F|C)( )*${red}( )*,( )*${green}( )*,( )*${blue}
+
+To-do: parser is interested in filling following fields:
+
+	In t_main: map, map_H, map_W
+
+	In t_mlx: wall_N, wall_S, wall_E, wall_W
+
+To-do: fd is not need in cub main
+
+Test me: file extension must be "cub"
+
+	Fix me: lafjdslfj.aflafdjal.cub doesn't work
+
+Test me: given config file must exist
+
+Test me: errors are thrown properly
+
+To-do: throw error on unknown config entry keys
+
+To-do: throw error on duplicate config entry keys
+
+Perhaps: add more user friendly error messages
+
+To-do: add more tests
