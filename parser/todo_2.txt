@@ -1,0 +1,82 @@
+Bug: check frame doesn't work:
+        1111111111111111111111111
+        100000000011000000N000001
+        1011000001110000010000001
+        1001000000000000001000001
+111111111011000001110000000000001
+100000000011000001110111111111011 <- Fix me
+11110111111111011100000010001
+11110111111111011101010010001
+11000000110101011100000010001
+11000000000000001100000000001
+10000000000000001101010010001
+11000001110101011111011110001
+11110111 1110101 101111010001
+11111111 1111111 111111111111
+
+Remember last and next line, bug only possible on right
+
+“The map must be closed/surrounded by walls [...]”
+
+Possible cases:
+
+1111111101
+10000001
+10000001
+
+11111
+11101	len: 5 <<<
+111	len: 3
+111
+
+must check <= 3
+must check 5 - 3 = 2
+
+11111
+1101
+1111
+
+   0123456
+0: 111111	len: 5
+1: 1000001	len: 6
+2: 111111	len: 5
+
+Problem: (0, 5) should be 1.
+Why:
+1) len of prev (not null) is 5,
+	so all charaters after (, 5 - 1) must be 1
+2) len of next (not null) is 5,
+	so all character after (, 5 - 1) must be 1
+
+11111111
+10000101
+11111111
+
+Simple assumption:
+
+if lines l1 and l2 are adjacent and not null, then:
+	For each line, all characters in range:
+		[min(l1.length, l2.length), ∞)
+	must be 1
+
+111
+1111
+
+111	len: 3
+101	len: 3. min = 3. [3, ∞) must be 1
+111
+
+That must be true for all lines.
+(l[0], l[1]), (l[1], l[2]), ..., (l[n], l[n + 1]) where l[n + 1] == 0
+
+Rules:
+
+	• [x] Up must be 1 (first_row)
+	• [x] Down must 1
+	• [ ] Left side must exist and be 1
+	• [ ] Right: f(line, next_line)
+
+[x] What about empty lines? Empty lines are wrong because left and right
+
+11111
+111\0

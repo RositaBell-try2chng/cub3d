@@ -13,7 +13,7 @@ N, S, E, W is where player is and his initial orientation.
 
 [ ] There must be one player.
 
-[x] Map must be enclosed in ones.
+[%] Map must be enclosed in ones.
 
 [%] Parse errors look like this: "Error\nFoo bar\n".
 
@@ -30,6 +30,20 @@ Effectively, minimal map is 3x3.
 [x] Simplification: space is handled as a one.
 
 [x] Whether map is a rectangle or not is not specified.
+
+Simplification: map frame should be thick.
+
+	Not ok:
+
+		110
+		1N1
+		111
+
+	Ok:
+
+		111
+		1N1
+		111
 
 ? Newline at the end? Optional.
 [x] Fix me: new lines are assumed.
