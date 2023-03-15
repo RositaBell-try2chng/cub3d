@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int main_test(char *path) {
+int cub_main_test(char *path) {
 	t_cub_conf conf = cub_parse(path);
 
 	t_cub_line_list *line_list_ptr = conf.lines;
@@ -25,7 +25,7 @@ int main_test(char *path) {
 			curr_char_ptr != 0;
 			curr_char_ptr = curr_char_ptr->next
 		) {
-			write1loop_or_die(
+			cub_write1loop_or_die(
 				STDOUT_FILENO,
 				curr_char_ptr->value
 			);
@@ -33,7 +33,7 @@ int main_test(char *path) {
 			free(curr_char_ptr);
 			curr_char_ptr = &tmp_list;
 		} }
-		write1loop_or_die(
+		cub_write1loop_or_die(
 			STDOUT_FILENO,
 			'\n'
 		);
@@ -44,5 +44,5 @@ int main_test(char *path) {
 }
 
 int main(int argc, char **argv) {
-	main_test(argv[1]);
+	cub_main_test(argv[1]);
 }

@@ -5,25 +5,25 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void write1loop_or_die(int fd, char c) {
+void cub_write1loop_or_die(int fd, char c) {
 	while (1) {
 		int much_written = write(fd, &c, 1);
 		if (much_written == 1)
 			return;
 		if (much_written == -1) {
-			perror("Error\nwrite1loop_or_die");
+			perror("Error\ncub_write1loop_or_die");
 			exit(1);
 		}
 	}
 }
 
-void write_loop_or_die(int fd, char *s) {
+void cub_write_loop_or_die(int fd, char *s) {
 	for (char c = *s; c != 0; c = *++s) {
-		write1loop_or_die(fd, c);
+		cub_write1loop_or_die(fd, c);
 	}
 }
 
-_Bool are_strings_equal(char *s1, char *s2) {
+_Bool cub_are_strings_equal(char *s1, char *s2) {
 	while (*s1 && *s2) {
 		if (*s1 != *s2)
 			return 0;
@@ -38,7 +38,7 @@ static void cub_check_extension_or_die(char *name) {
 	for (c = *name; c != 0 && c != '.'; c = *++name)
 		;
 	if (c == 0) {
-		write_loop_or_die(
+		cub_write_loop_or_die(
 			2,
 			"Error\n"
 			"cub_check_extension_or_die: "
@@ -47,8 +47,8 @@ static void cub_check_extension_or_die(char *name) {
 		exit(1);
 	}
 	name++;
-	if (!are_strings_equal(name, "cub")) {
-		write_loop_or_die(
+	if (!cub_are_strings_equal(name, "cub")) {
+		cub_write_loop_or_die(
 			2,
 			"Error\n"
 			"cub_check_extension_or_die: "
@@ -58,7 +58,7 @@ static void cub_check_extension_or_die(char *name) {
 	}
 }
 
-int read1(int fd) {
+int cub_read1(int fd) {
 	int result;
 	char c;
 	int much_read = read(fd, &c, 1);
@@ -69,8 +69,8 @@ int read1(int fd) {
 	return result;
 }
 
-int read1_or_die(int fd) {
-	int much_read = read1(fd);
+int cub_read1_or_die(int fd) {
+	int much_read = cub_read1(fd);
 	if (much_read == 0)
 		return -1;
 	if (much_read == -1) {
@@ -79,10 +79,10 @@ int read1_or_die(int fd) {
 	}
 }
 
-void *malloc_or_die(size_t size) {
+void *cub_malloc_or_die(size_t size) {
 	void *result = malloc(size);
 	if (result == 0) {
-		perror("Error\nmalloc_or_die");
+		perror("Error\ncub_malloc_or_die");
 		exit(1);
 	}
 	return result;
@@ -91,11 +91,11 @@ void *malloc_or_die(size_t size) {
 t_cub_char_list *cub_fd_to_char_list_ptr(int fd) {
 	t_cub_char_list *char_list_ptr = 0;
 	while (1) {
-		int c = read1_or_die(fd);
+		int c = cub_read1_or_die(fd);
 		if (c == -1) break;
 
 		t_cub_char_list *tmp_ptr =
-			malloc_or_die(sizeof(t_cub_char_list));
+			cub_malloc_or_die(sizeof(t_cub_char_list));
 		*tmp_ptr = (t_cub_char_list){
 			.value = c,
 			.next = char_list_ptr,
@@ -121,7 +121,7 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 		switch (c) {
 		case '\n': {
 			t_cub_line_list *tmp_ptr =
-				malloc_or_die(sizeof(t_cub_line_list));
+				cub_malloc_or_die(sizeof(t_cub_line_list));
 			*tmp_ptr = (t_cub_line_list){
 				.next = line_list_ptr,
 				.value = 0,
@@ -131,7 +131,7 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 		} break;
 		default: { // Prepend char to curr char_list
 			t_cub_char_list *tmp_ptr_2 =
-				malloc_or_die(sizeof(t_cub_char_list));
+				cub_malloc_or_die(sizeof(t_cub_char_list));
 
 			*tmp_ptr_2 = (t_cub_char_list){
 				.next = line_list_ptr->value,
@@ -193,16 +193,16 @@ void cub_replace_spaces_with_ones(t_cub_line_list *lines) {
 	}
 }
 
-void error_die(char *message) {
-	write_loop_or_die(2, "Error\n");
-	write_loop_or_die(2, message);
-	write_loop_or_die(2, "\n");
+void cub_error_die(char *message) {
+	cub_write_loop_or_die(2, "Error\n");
+	cub_write_loop_or_die(2, message);
+	cub_write_loop_or_die(2, "\n");
 	exit(1);
 }
 
-void true_or_error_die(_Bool condition, char *message) {
+void cub_true_or_error_die(_Bool condition, char *message) {
 	if (!condition) {
-		error_die(message);
+		cub_error_die(message);
 	}
 }
 
@@ -218,19 +218,19 @@ void cub_debug_print_map(t_cub_line_list *lines) {
 			a_char_ptr != 0;
 			a_char_ptr = a_char_ptr->next
 		) {
-			write1loop_or_die(
+			cub_write1loop_or_die(
 				2,
 				a_char_ptr->value
 			);
 		}
-		write1loop_or_die(2, '\n');
+		cub_write1loop_or_die(2, '\n');
 	}
 }
 
 void cub_check_map_top_or_bottom_or_die(t_cub_char_list *line) {
 	while (1) {
 		if (line == 0) break;
-		true_or_error_die(
+		cub_true_or_error_die(
 			line->value == '1',
 			"cub_check_map_top_or_bottom_or_die: "
 			"map is not framed "
@@ -241,7 +241,7 @@ void cub_check_map_top_or_bottom_or_die(t_cub_char_list *line) {
 }
 
 void cub_check_map_empty_line_or_die(int length) {
-	true_or_error_die(
+	cub_true_or_error_die(
 		length > 0,
 		"cub_check_map_left_and_right_or_die: "
 		"map line can't be empty because it must be in a frame"
@@ -268,13 +268,13 @@ void cub_check_map_left_and_right_or_die(
 	while (1) {
 		if (curr_char_ptr == 0 || prev_char_ptr == 0) break;
 		if (curr_char_ptr -> next == 0)
-			true_or_error_die(
+			cub_true_or_error_die(
 				curr_char_ptr -> value == '1',
 				"cub_check_map_left_and_right_or_die: "
 				"map’s right edge can't be zero"
 			);
 		if (first_column)
-			true_or_error_die(
+			cub_true_or_error_die(
 				curr_char_ptr -> value == '1',
 				"cub_check_map_left_and_right_or_die: "
 				"map’s left edge can't be zero"
@@ -286,7 +286,7 @@ void cub_check_map_left_and_right_or_die(
 	t_cub_char_list *must_be_walls_char_ptr =
 		curr_char_ptr == 0 ? prev_char_ptr : curr_char_ptr;
 	while (must_be_walls_char_ptr) {
-		true_or_error_die(
+		cub_true_or_error_die(
 			must_be_walls_char_ptr -> value == '1',
 			"cub_check_map_left_and_right_or_die: "
 			// Fix me: cliff is a weird word
