@@ -1,12 +1,10 @@
 #!/bin/sh
 set -xe
 
-cc -pedantic -std=c99 tests.c parser.c
+trap 'rm -f tester' 0
 
-./a.out map.cub
+cc -o tester -pedantic -std=c99 tests.c parser.c
 
-./a.out empty
-
-./a.out just_newline
-
-./a.out one
+for file in tests/{map.cub,just_newline,empty,one}; do
+	./tester "$file"
+done
