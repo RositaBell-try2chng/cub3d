@@ -32,7 +32,7 @@ _Bool cub_are_strings_equal(char *s1, char *s2) {
 	return *s1 == *s2;
 }
 
-static void cub_check_extension_or_die(char *name) {
+void cub_check_extension_or_die(char *name) {
 	char c;
 	// Parse until on dot
 	for (c = *name; c != 0 && c != '.'; c = *++name)
@@ -248,7 +248,7 @@ void cub_check_map_empty_line_or_die(int length) {
 	);
 }
 
-static int cub_min(int a, int b) { return a < b ? a : b; }
+int cub_min(int a, int b) { return a < b ? a : b; }
 
 // Prev might be null
 void cub_check_map_left_and_right_or_die(

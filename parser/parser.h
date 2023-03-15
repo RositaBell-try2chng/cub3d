@@ -22,7 +22,7 @@ void cub_write_loop_or_die(int fd, char *s);
 
 _Bool cub_are_strings_equal(char *s1, char *s2);
 
-static void cub_check_extension_or_die(char *name);
+void cub_check_extension_or_die(char *name);
 
 // Takes a file descriptor
 // Returns -1 on failure, 0 on end of file, read character otherwise
