@@ -118,7 +118,7 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 		char c = char_list_ptr->value;
 
 		switch (c) {
-		case '\n':
+		case '\n': {
 			t_cub_line_list *tmp_ptr =
 				malloc_or_die(sizeof(t_cub_line_list));
 			*tmp_ptr = (t_cub_line_list){
@@ -127,8 +127,8 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 				.length = 0,
 			};
 			line_list_ptr = tmp_ptr;
-		break;
-		default: // Prepend char to curr char_list
+		} break;
+		default: { // Prepend char to curr char_list
 			t_cub_char_list *tmp_ptr_2 =
 				malloc_or_die(sizeof(t_cub_char_list));
 
@@ -138,7 +138,7 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 			};
 			line_list_ptr->value = tmp_ptr_2;
 			line_list_ptr->length++;
-		break;
+		} break;
 		}
 
 		free(char_list_ptr);
@@ -226,52 +226,96 @@ void cub_debug_print_map(t_cub_line_list *lines) {
 	}
 }
 
+void cub_check_map_top_or_bottom_or_die(t_cub_char_list *line) {
+	while (1) {
+		if (line == 0) break;
+		true_or_error_die(
+			line->value == '1',
+			"cub_check_map_top_or_bottom_or_die: "
+			"map is not framed "
+			"horizontally"
+		);
+		line = line -> next;
+	}
+}
+
+void cub_check_map_empty_line_or_die(int length) {
+	true_or_error_die(
+		length > 0,
+		"cub_check_map_left_and_right_or_die: "
+		"map line can't be empty because it must be in a frame"
+	);
+}
+
+static int cub_min(int a, int b) { return a < b ? a : b; }
+
+// Prev might be null
+void cub_check_map_left_and_right_or_die(
+	t_cub_line_list *prev,
+	t_cub_line_list *curr
+) {
+	_Bool first_column = 1;
+	_Bool last_column;
+	cub_check_map_empty_line_or_die(curr->length);
+	// First line is checked by a different function
+	if (prev == 0) return;
+	// Everything in range [must_be_walls; ∞) must be '1'
+	int must_be_walls = cub_min(curr -> length, prev -> length);
+	{
+	t_cub_char_list *curr_char_ptr = curr -> value;
+	t_cub_char_list *prev_char_ptr = prev -> value;
+	while (1) {
+		if (curr_char_ptr == 0 || prev_char_ptr == 0) break;
+		if (curr_char_ptr -> next == 0)
+			true_or_error_die(
+				curr_char_ptr -> value == '1',
+				"cub_check_map_left_and_right_or_die: "
+				"map’s right edge can't be zero"
+			);
+		if (first_column)
+			true_or_error_die(
+				curr_char_ptr -> value == '1',
+				"cub_check_map_left_and_right_or_die: "
+				"map’s left edge can't be zero"
+			);
+		first_column = 0;
+		curr_char_ptr = curr_char_ptr -> next;
+		prev_char_ptr = prev_char_ptr -> next;
+	}
+	t_cub_char_list *must_be_walls_char_ptr =
+		curr_char_ptr == 0 ? prev_char_ptr : curr_char_ptr;
+	while (must_be_walls_char_ptr) {
+		true_or_error_die(
+			must_be_walls_char_ptr -> value == '1',
+			"cub_check_map_left_and_right_or_die: "
+			// Fix me: cliff is a weird word
+			"map’s right cliff can't be zero"
+		);
+		must_be_walls_char_ptr = must_be_walls_char_ptr -> next;
+	}
+	}
+}
+
 void cub_check_map_frame_or_die(t_cub_line_list *lines) {
 	_Bool first_row = 1;
 	_Bool last_row;
+	t_cub_line_list *prev = 0;
 	for (
 		t_cub_line_list *a_line_ptr = lines;
 		a_line_ptr != 0;
 		a_line_ptr = a_line_ptr->next
 	) {
 		last_row = a_line_ptr->next == 0;
-		// Check rows
-		if (first_row || last_row) {
-			for (
-				t_cub_char_list *a_char_ptr =
-					a_line_ptr->value;
-				a_char_ptr != 0;
-				a_char_ptr = a_char_ptr->next
-			) {
-				true_or_error_die(
-					a_char_ptr->value == '1',
-					"check_map_frame_or_die: "
-					"map is not framed "
-					"horizontally"
-				);
-			}
-		}
-		_Bool first_column = 1;
-		_Bool last_column;
-		// Check columns
-		for (
-			t_cub_char_list *a_char_ptr =
-				a_line_ptr->value;
-			a_char_ptr != 0;
-			a_char_ptr = a_char_ptr->next
-		) {
-			last_column = a_char_ptr->next == 0;
-			if (first_column || last_column) {
-				true_or_error_die(
-					a_char_ptr->value == '1',
-					"check_map_frame_or_die: "
-					"map is not framed "
-					"vertically"
-				);
-			}
-			first_column = 0;
-		}
+		if (first_row || last_row)
+			cub_check_map_top_or_bottom_or_die(
+				a_line_ptr->value
+			);
+		cub_check_map_left_and_right_or_die(
+			prev,
+			a_line_ptr
+		);
 		first_row = 0;
+		prev = a_line_ptr;
 	}
 }
 
