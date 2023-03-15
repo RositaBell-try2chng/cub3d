@@ -13,16 +13,20 @@ unsigned int	get_pxl(double wall_h, t_hit *hit, int h)
 
 	if (hit->flg_wall == 'Y')
 	{
-		x = (int)(get_diff_border(hit->y_x) / SCALE * hit->side->w);
-		k = wall_h / hit->side->h;
-		y = (int)((double)h / k);
+		x = (int) (get_diff_border(hit->y_x) / SCALE * hit->side->w);
+		if (hit->pl_ang > 0.0 && hit->pl_ang < 180.0)
+			x = hit->side->w - x - 1;
 	}
 	else
 	{
-		y = (int)(get_diff_border(hit->x_y) / SCALE * hit->side->h);
-		k = wall_h / hit->side->w;
-		x = (int)((double)h / k);
+		x = (int) (get_diff_border(hit->x_y) / SCALE * hit->side->w);
+		if (hit->pl_ang < 270.0 && hit->pl_ang > 90.0)
+			x = hit->side->w - x - 1;
 	}
+	k = wall_h / hit->side->h;
+	y = (int)((double)h / k);
+	if (x >= 64 || y >= 64)
+		printf("x = %d, y = %d, flg = %c\n", x, y, hit->flg_wall);
 	return (*get_pxl_adr(hit->side, x, y));
 }
 

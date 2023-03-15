@@ -14,7 +14,7 @@ void	move_cnt_recursive(t_move *mv, char flg, char step)
 {
 	double	k;
 
-	if (step == 4)
+	if (step == 8)
 		return ;
 	if (flg == 'y')
 	{
@@ -44,4 +44,22 @@ void	move_cnt(t_main *Main, t_pl *pl, double ang, int speed)
 		move_cnt_recursive(&mv, 'y', 0);
 	else
 		move_cnt_recursive(&mv, 'x', 0);
+}
+
+int	define_speed_ang(t_pl *pl, double *p_ang)
+{
+	int	res_w;
+	int	res_d;
+
+	res_w = pl->flg_move_w + pl->flg_move_s;
+	res_d = pl->flg_move_d + pl->flg_move_a;
+	if (res_w == 0 && res_d == 0)
+		return (0);
+	if (res_w == 1 || res_w == -1)
+	{
+		(*p_ang) += 45.0 * res_d * res_w;
+		return (res_w);
+	}
+	(*p_ang) += 90.0;
+	return (res_d);
 }

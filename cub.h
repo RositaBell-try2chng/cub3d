@@ -107,6 +107,7 @@ typedef	struct	s_hit_values
 	//pl values
 	double	pl_x;
 	double	pl_y;
+	double	pl_ang;
 } t_hit;
 
 typedef struct	s_move
@@ -134,6 +135,7 @@ void    turn(t_pl *pl);
 char	check_walls(char **map, double x, double y);
 void	move_cnt_recursive(t_move *mv, char flg, char step);
 void	move_cnt(t_main *Main, t_pl *pl, double ang, int speed);
+int		define_speed_ang(t_pl *pl, double *p_ang);
 
 //raycast
 void    cast_rays(t_main *M, t_pl *pl);
