@@ -1,7 +1,7 @@
 #!/bin/sh
 set -xe
 
-cc -pedantic -std=c99 main.c
+cc -pedantic -std=c99 tests.c parser.c
 
 ./a.out map.cub
 

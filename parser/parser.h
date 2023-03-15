@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 typedef struct s_cub_char_list {
 	char value;
 	struct s_cub_char_list *next;
