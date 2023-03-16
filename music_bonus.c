@@ -10,7 +10,7 @@ static void	signal_handler(int sig)
 static void	music_turn_on()
 {
 	while (1)
-		system("afplay doom.m4a");
+		system("afplay ./rock/doom.m4a");
 }
 
 static void	free_resourses(t_main *m)
