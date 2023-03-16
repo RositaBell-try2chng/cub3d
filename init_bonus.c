@@ -98,9 +98,9 @@ t_pl    *player_init(t_main *m)
 		j = -1;
 		while (m->map[i][++j])
 		{
-			if (m->map[i][j] != '1' && m->map[i][j] != '0' && m->map[i][j] != ' ') {
+			if (m->map[i][j] != '1' && m->map[i][j] != '0' && \
+				m->map[i][j] != ' ')
 				return (save_position(m, m->map[i][j], i, j));
-			}
 		}
 	}
 	return m->pl;

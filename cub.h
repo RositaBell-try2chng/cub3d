@@ -10,6 +10,7 @@
 # include <string.h>
 # include <math.h>
 # include <limits.h>
+# include <signal.h>
 
 # define CUB_PLATFORM_MACOS 0
 # define CUB_PLATFORM_LINUX 1
@@ -93,6 +94,7 @@ typedef struct s_main
 	int     map_W[100];
 	int     fd;
 	t_pl    *pl;
+	pid_t	pid;
 } t_main;
 
 typedef	struct	s_hit_values
@@ -182,4 +184,6 @@ void	draw_full_back(t_img *map, int color);
 void	draw_direction(t_img *map, t_pl *pl, int k);
 void	draw_no_walls_back(t_main *M, t_pl *pl, t_img *map);
 void	draw_player(t_img *map);
+//music
+void	start_music(t_main *m);
 #endif

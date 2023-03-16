@@ -7,8 +7,9 @@ COMMON_SRCS	= main.c ft_split.c raycast.c casts_utils.c \
 
 SRCS_NO_BON	= ${COMMON_SRCS} draws.c init.c hooks.c
 
-SRCS_BON	= ${COMMON_SRCS} draws_bonus.c init_bonus.c hooks_bonus.c \
-								draw_map_bonus.c draw_map_utils_bonus.c
+SRCS_BON	= ${COMMON_SRCS}	draws_bonus.c init_bonus.c hooks_bonus.c \
+								draw_map_bonus.c draw_map_utils_bonus.c	\
+								music_bonus.c
 
 OBJS		= ${SRCS_NO_BON:.c=.o}
 

@@ -30,7 +30,10 @@ void	init_error_exit(t_main *m, char flg)
 		mlx_destroy_image(m->mp->mlx, m->mp->wall_n.img);
 	if (m->mp->wall_s.img)
 		mlx_destroy_image(m->mp->mlx, m->mp->wall_s.img);
-	printf("Error: init_error\n");
+	if (flg != 5)
+		write(2, "Error: init_error\n", 19);
+	else
+		write(2, "Error: fork_error\n", 19);
 	exit(1);
 }
 

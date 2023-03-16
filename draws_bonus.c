@@ -34,6 +34,7 @@ void	draw_vis(t_main *M, t_hit *hit)
 
 void	drawers(t_main *m, t_pl *pl)
 {
+	start_music(m);
 	cast_rays(m, pl);
 	draw_minimap(m);
 }
@@ -44,8 +45,8 @@ void	puts_img(void *mlx, void *win, t_mlx *mp)
 
 	mlx_put_image_to_window(mlx, win, mp->vis.img, 0, 0);
 	mlx_put_image_to_window(mlx, win, mp->map.img, 0, 0);
-	mlx_put_image_to_window(mlx, win, mp->rock[cnt / 8].img, 450, 10);
+	mlx_put_image_to_window(mlx, win, mp->rock[cnt / 7].img, 450, 10);
 	cnt++;
-	if (cnt == 15 * 8)
+	if (cnt == 15 * 7)
 		cnt = 0;
 }
