@@ -77,6 +77,8 @@ fclean_b:	clean_b
 			${RM} ${NAME_BON}
 
 fclean:		clean_m clean_b
+			${RM} ${NAME}
+			${RM} ${NAME_BON}
 
 re_b:		fclean_b bonus
 

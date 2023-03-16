@@ -59,8 +59,6 @@ double	cast_left_up(t_main *m, t_hit *hit)
 	flg_correct_y = 1;
 	res_x = find_x_wall(m, hit, &flg_correct_x);
 	res_y = find_y_wall(m, hit, &flg_correct_y);
-	if (!flg_correct_x && !flg_correct_y)
-		exit(printf("incorrect flags\n"));
 	if ((res_x <= res_y && flg_correct_x) || !flg_correct_y)
 	{
 		hit->side = &m->mp->wall_e;

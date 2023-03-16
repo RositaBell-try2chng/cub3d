@@ -39,5 +39,6 @@ void	drawers(t_main *m, t_pl *pl)
 
 void	puts_img(void *mlx, void *win, t_mlx *mp)
 {
+	mlx_clear_window(mlx, win);
 	mlx_put_image_to_window(mlx, win, mp->vis.img, 0, 0);
 }

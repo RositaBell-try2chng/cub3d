@@ -43,6 +43,7 @@ void	puts_img(void *mlx, void *win, t_mlx *mp)
 {
 	static int	cnt;
 
+	mlx_clear_window(mlx, win);
 	mlx_put_image_to_window(mlx, win, mp->vis.img, 0, 0);
 	mlx_put_image_to_window(mlx, win, mp->map.img, 0, 0);
 	mlx_put_image_to_window(mlx, win, mp->rock[cnt / 7].img, 450, 10);
