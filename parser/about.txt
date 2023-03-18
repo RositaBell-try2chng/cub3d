@@ -45,6 +45,8 @@ To-do: parser is interested in filling following fields:
 
 	In t_mlx: wall_N, wall_S, wall_E, wall_W
 
+Assumption: paths to textures are relative to launch directory, not configuration directory
+
 To-do: fd is not need in cub main
 
 Test me: file extension must be "cub"

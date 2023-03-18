@@ -1,17 +1,17 @@
 #include "cub.h"
 
-char	open_walls(t_mlx *mp)
+char	open_walls(t_mlx *mp, t_main *m)
 {
 	t_img *i;
 
 	i = &mp->wall_w;
-	i->img = mlx_xpm_file_to_image(mp->mlx, "texture/WALL_W.xpm", &i->w, &i->h);
+	i->img = mlx_xpm_file_to_image(mp->mlx, m->path_west, &i->w, &i->h);
 	i = &mp->wall_e;
-	i->img = mlx_xpm_file_to_image(mp->mlx, "texture/WALL_E.xpm", &i->w, &i->h);
+	i->img = mlx_xpm_file_to_image(mp->mlx, m->path_east, &i->w, &i->h);
 	i = &mp->wall_n;
-	i->img = mlx_xpm_file_to_image(mp->mlx, "texture/WALL_N.xpm", &i->w, &i->h);
+	i->img = mlx_xpm_file_to_image(mp->mlx, m->path_north, &i->w, &i->h);
 	i = &mp->wall_s;
-	i->img = mlx_xpm_file_to_image(mp->mlx, "texture/WALL_S.xpm", &i->w, &i->h);
+	i->img = mlx_xpm_file_to_image(mp->mlx, m->path_south, &i->w, &i->h);
 
 	if (!mp->wall_w.img || !mp->wall_e.img || \
 		!mp->wall_n.img || !mp->wall_s.img)
@@ -28,7 +28,7 @@ void    imgs_init(t_main *m)
 	m->mp->vis.img = mlx_new_image(m->mp->mlx, 1024, 768);
 	if (!m->mp->vis.img)
 		init_error_exit(m, 1);
-	if (!open_walls(m->mp))
+	if (!open_walls(m->mp, m))
 		init_error_exit(m, 2);
 	m->mp->vis.addr = get_data_img(&m->mp->vis);
 }

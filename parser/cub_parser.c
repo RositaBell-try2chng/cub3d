@@ -63,7 +63,7 @@ void cub_check_extension_or_die(char *name) {
 	char extension[] = ".cub";
 
 	cub_true_or_error_die(
-		cub_strlen(name) >= sizeof extension - 1,
+		cub_strlen(name) >= (int)(sizeof extension) - 1,
 		"cub_check_extension_or_die: wrong extension"
 	);
 
@@ -72,7 +72,7 @@ void cub_check_extension_or_die(char *name) {
 	char *extension_reversed =
 		cub_reverse_string_or_die(extension);
 
-	for (int i = 0; i < sizeof extension - 1; i++) {
+	for (int i = 0; i < (int)(sizeof extension) - 1; i++) {
 		cub_true_or_error_die(
 			extension_reversed[i] == reversed[i],
 			"cub_check_extension_or_die: wrong extension"
@@ -751,12 +751,11 @@ void cub_check_map_left_and_right_or_die(
 	t_cub_line_list *curr
 ) {
 	_Bool first_column = 1;
-	_Bool last_column;
 	cub_check_map_empty_line_or_die(curr->length);
 	// First line is checked by a different function
 	if (prev == 0) return;
 	// Everything in range [must_be_walls; ∞) must be '1'
-	int must_be_walls = cub_min(curr -> length, prev -> length);
+    // int must_be_walls = cub_min(curr -> length, prev -> length);
 	{
 	t_cub_char_list *curr_char_ptr = curr -> value;
 	t_cub_char_list *prev_char_ptr = prev -> value;

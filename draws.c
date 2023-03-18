@@ -25,9 +25,9 @@ void	draw_vis(t_main *m, t_hit *hit)
 		if (y >= wall_start && y < wall_end)
 			*dst = get_pxl(wall_h, hit, y - wall_start);
 		else if (y < 384)
-			*dst = UP_COLOR;
+			*dst = m->ceiling_color;
 		else
-			*dst = DOWN_COLOR;
+			*dst = m->floor_color;
 		y++;
 	}
 }

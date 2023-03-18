@@ -3,7 +3,8 @@ COMMON_SRCS	= main.c ft_split.c raycast.c casts_utils.c \
               draws_utils.c \
               common_utils.c \
               move.c move_utils.c \
-              game_play.c
+              game_play.c \
+              parser/cub_parser.c
 
 SRCS_NO_BON	= ${COMMON_SRCS} draws.c init.c hooks.c
 

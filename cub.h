@@ -95,6 +95,18 @@ typedef struct s_main
 	int     fd;
 	t_pl    *pl;
 	pid_t	pid;
+
+	// Fix me: free me
+	// Fix me: add to bonus
+	// Malloc'ed
+	char *path_north;
+	char *path_south;
+	char *path_east;
+	char *path_west;
+
+	// Fix me: add to bonus
+	unsigned int floor_color;
+	unsigned int ceiling_color;
 } t_main;
 
 typedef	struct	s_hit_values

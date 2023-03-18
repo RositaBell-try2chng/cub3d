@@ -57,7 +57,4 @@ void cub_main_test(char *path) {
 
 int main(int argc, char **argv) {
 	cub_main_test(argv[1]);
-//	for (;;)
-//		;
-
 }
