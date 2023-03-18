@@ -8,6 +8,9 @@
 
 #include "cub_parser_private.h"
 
+// Fix me: use this everywhere
+// _Bool is_line_break(char c) { return c == '\n' || c == '\r'; }
+
 void cub_write1loop_or_die(int fd, char c) {
 	while (1) {
 		int much_written = write(fd, &c, 1);
@@ -127,7 +130,8 @@ cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr) {
 		char c = char_list_ptr->value;
 
 		switch (c) {
-		case '\n': {
+		case '\n':
+		case '\r': {
 			t_cub_line_list *tmp_line_ptr =
 				cub_malloc_or_die(sizeof *tmp_line_ptr);
 			*tmp_line_ptr = (t_cub_line_list){
@@ -177,7 +181,7 @@ char cub_skip_spaces_or_die(int fd) {
 
 char cub_skip_new_lines_or_die(int fd) {
 	char result = '\n';
-	while (result == '\n') {
+	while (result == '\n' || result == '\r') {
 		result = cub_read_char_or_die(fd);
 	}
 	return result;
@@ -192,6 +196,7 @@ t_cub_char_list *cub_parse_until_got_new_line_or_die(
 		char c = cub_read_char_or_die(fd);
 		switch (c) {
 		case '\n':
+		case '\r':
 			return result;
 		break;
 		default: {
@@ -254,7 +259,7 @@ char *cub_char_list_to_chars_or_die(t_cub_char_list *list) {
 }
 
 char *cub_parse_entry_value_or_die(char first, int fd) {
-	if (first == '\n') {
+	if (first == '\n' || first == '\r') {
 		cub_error_die(
 			"cub_parse_entry_value_or_die: "
 			"entry value can't be empty"
@@ -421,7 +426,7 @@ void cub_parse_color_or_die(
 	if (last == ' ')
 	last = cub_skip_spaces_or_die(fd);
 	cub_true_or_error_die(
-		last == '\n',
+		last == '\n' || last == '\r',
 		"cub_parse_color_or_die: "
 		"expected new line"
 	);
