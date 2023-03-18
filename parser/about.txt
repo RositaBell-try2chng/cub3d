@@ -1,5 +1,7 @@
 Assumption: there is no need to free everything on exit()
 
+Assumption: there are exactly 6 config entries: "SO", "NO", "EA", "WE", "F", "C"
+
 Valid map characters must be in set '0', '1', 'N', 'S', 'E', 'W', ' '
 
 'N', 'S', 'E' or 'W' determine player initial position and orientation
