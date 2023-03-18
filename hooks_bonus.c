@@ -1,15 +1,22 @@
 #include "cub.h"
 
+static void	music_stop(t_main *m)
+{
+	kill(m->pid, SIGKILL);
+	system("pkill afplay");
+}
+
 int	ft_red_cross(t_main *m)
 {
 	int	i;
 
 	i = 0;
-	printf("x = %lf, y = %lf, ang = %lf\n", m->pl->x, m->pl->y, m->pl->ang);
+	music_stop(m);
 	free(m->pl);
 	while (m->map && m->map[i])
 		free(m->map[i++]);
 	mlx_destroy_image(m->mp->mlx, m->mp->vis.img);
+	mlx_destroy_image(m->mp->mlx, m->mp->map.img);
 	mlx_destroy_image(m->mp->mlx, m->mp->wall_w.img);
 	mlx_destroy_image(m->mp->mlx, m->mp->wall_e.img);
 	mlx_destroy_image(m->mp->mlx, m->mp->wall_n.img);

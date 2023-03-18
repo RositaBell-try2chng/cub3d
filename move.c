@@ -1,16 +1,16 @@
 #include "cub.h"
 
-void	move(t_main *Main, t_pl *pl)
+static void	move(t_main *m, t_pl *pl)
 {
 	int		speed;
 	double	ang;
 
 	ang = pl->ang;
 	speed = define_speed_ang(pl, &ang);
-	move_cnt(Main, pl, ang, speed);
+	move_cnt(m, pl, ang, speed);
 }
 
-void	turn(t_pl *pl)
+static void	turn(t_pl *pl)
 {
 	if (pl->flg_trn_r == 1 && pl->flg_trn_l == 0)
 		pl->ang += 3;
@@ -20,4 +20,10 @@ void	turn(t_pl *pl)
 		pl->ang -= 360;
 	if (pl->ang < 0)
 		pl->ang += 360;
+}
+
+void	moves(t_main *m, t_pl *pl)
+{
+	turn(pl);
+	move(m, pl);
 }

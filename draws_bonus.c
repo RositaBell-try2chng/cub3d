@@ -8,7 +8,7 @@ static void	find_start_end(double wall_h, int *st, int *en)
 		(*en) = 768;
 }
 
-void	draw_vis(t_main *m, t_hit *hit)
+void	draw_vis(t_main *M, t_hit *hit)
 {
 	int				y;
 	unsigned int	*dst;
@@ -21,7 +21,7 @@ void	draw_vis(t_main *m, t_hit *hit)
 	find_start_end(wall_h, &wall_start, &wall_end);
 	while (y < 768)
 	{
-		dst = get_pxl_adr(&m->mp->vis, hit->cnt, y);
+		dst = get_pxl_adr(&M->mp->vis, hit->cnt, y);
 		if (y >= wall_start && y < wall_end)
 			*dst = get_pxl(wall_h, hit, y - wall_start);
 		else if (y < 384)
@@ -34,11 +34,20 @@ void	draw_vis(t_main *m, t_hit *hit)
 
 void	drawers(t_main *m, t_pl *pl)
 {
+	start_music(m);
 	cast_rays(m, pl);
+	draw_minimap(m);
 }
 
 void	puts_img(void *mlx, void *win, t_mlx *mp)
 {
+	static int	cnt;
+
 	mlx_clear_window(mlx, win);
 	mlx_put_image_to_window(mlx, win, mp->vis.img, 0, 0);
+	mlx_put_image_to_window(mlx, win, mp->map.img, 0, 0);
+	mlx_put_image_to_window(mlx, win, mp->rock[cnt / 7].img, 450, 10);
+	cnt++;
+	if (cnt == 15 * 7)
+		cnt = 0;
 }

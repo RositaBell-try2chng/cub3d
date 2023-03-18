@@ -32,12 +32,12 @@ void	move_cnt_recursive(t_move *mv, char flg, char step)
 	}
 }
 
-void	move_cnt(t_main *Main, t_pl *pl, double ang, int speed)
+void	move_cnt(t_main *m, t_pl *pl, double ang, int speed)
 {
 	t_move	mv;
 
 	mv.pl = pl;
-	mv.map = Main->map;
+	mv.map = m->map;
 	mv.ang = ang;
 	mv.speed = speed;
 	if (ang > 315.0 || ang <= 45 || (ang >= 135.0 && ang < 225.0))
