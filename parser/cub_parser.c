@@ -83,6 +83,7 @@ int cub_read1_or_die(int fd) {
 		perror("Error\nread1_or_die");
 		exit(1);
 	}
+	return much_read;
 }
 
 void *cub_malloc_or_die(size_t size) {
@@ -323,6 +324,12 @@ int cub_validate_color_number_or_die(t_cub_char_list *chars) {
 			"number is too big"
 		);
 		return result;
+	} else {
+		cub_write_loop_or_die(
+				STDERR_FILENO,
+				"cub_validate_color_number_or_die: unreachable"
+		);
+		exit(2);
 	}
 }
 
@@ -632,10 +639,6 @@ t_cub_conf cub_parse(char *path) {
 		);
 
 	return conf;
-}
-
-int cub_check_extension_or_die_test(char *path) {
-	cub_check_extension_or_die(path);
 }
 
 void cub_replace_spaces_with_ones(t_cub_line_list *lines) {
