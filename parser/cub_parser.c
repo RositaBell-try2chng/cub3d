@@ -95,6 +95,7 @@ void *cub_malloc_or_die(size_t size) {
 	return result;
 }
 
+// Fix me: name is incorrect: function also verifies that configuration file ends in a line break
 t_cub_char_list *cub_fd_to_char_list_ptr_or_die(char first, int fd) {
 	t_cub_char_list *char_list_ptr =
 		cub_malloc_or_die(sizeof *char_list_ptr);
@@ -102,9 +103,17 @@ t_cub_char_list *cub_fd_to_char_list_ptr_or_die(char first, int fd) {
 		.value = first,
 		.next = 0,
 	};
+	char prev = 0;
 	while (1) {
 		int c = cub_read1_or_die(fd);
-		if (c == -1) break;
+		if (c == -1) {
+			if (prev != '\n' && prev != '\r')
+				cub_error_die(
+					"cub_fd_to_char_list_ptr_or_die: "
+					"configuration file must end in a line break"
+				);
+			break;
+		}
 
 		t_cub_char_list *tmp_ptr =
 			cub_malloc_or_die(sizeof *tmp_ptr);
@@ -114,6 +123,7 @@ t_cub_char_list *cub_fd_to_char_list_ptr_or_die(char first, int fd) {
 		};
 
 		char_list_ptr = tmp_ptr;
+		prev = c;
 	}
 	// Close here since resource is consumed
 	close(fd);
