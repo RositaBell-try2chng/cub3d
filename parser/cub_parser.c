@@ -38,30 +38,49 @@ _Bool cub_are_strings_equal(char *s1, char *s2) {
 	return *s1 == *s2;
 }
 
+int cub_strlen(char *input) {
+	int result = 0;
+	while (*input) {
+		input++;
+		result++;
+	}
+	return result;
+}
+
+// Note: does not consume input
+char *cub_reverse_string_or_die(char *input) {
+	int len = cub_strlen(input);
+	char *output = cub_malloc_or_die(len + 1);
+	output[len] = 0;
+	for (int i = 0; i < len; i++) {
+		output[i] = input[len - i - 1];
+	}
+	return output;
+}
+
+// Note: does not consume input
 void cub_check_extension_or_die(char *name) {
-	char c;
-	// Parse until on dot
-	for (c = *name; c != 0 && c != '.'; c = *++name)
-		;
-	if (c == 0) {
-		cub_write_loop_or_die(
-			2,
-			"Error\n"
-			"cub_check_extension_or_die: "
-			"no extension in file name\n"
+	char extension[] = ".cub";
+
+	cub_true_or_error_die(
+		cub_strlen(name) >= sizeof extension - 1,
+		"cub_check_extension_or_die: wrong extension"
+	);
+
+	char *reversed =
+		cub_reverse_string_or_die(name);
+	char *extension_reversed =
+		cub_reverse_string_or_die(extension);
+
+	for (int i = 0; i < sizeof extension - 1; i++) {
+		cub_true_or_error_die(
+			extension_reversed[i] == reversed[i],
+			"cub_check_extension_or_die: wrong extension"
 		);
-		exit(1);
 	}
-	name++;
-	if (!cub_are_strings_equal(name, "cub")) {
-		cub_write_loop_or_die(
-			2,
-			"Error\n"
-			"cub_check_extension_or_die: "
-			"extension is not “cub”\n"
-		);
-		exit(1);
-	}
+
+	free(extension_reversed);
+	free(reversed);
 }
 
 int cub_read1(int fd) {
