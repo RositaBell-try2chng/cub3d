@@ -44,7 +44,7 @@ t_cub_char_list	*cub_fd_to_char_list_ptr_or_die_helper(
 	return (char_list_ptr);
 }
 
-// Fix me: name is incorrect:
+// Perhaps: name is incorrect:
 // function also verifies that configuration file ends in a line break
 // Close fd since resource is consumed
 t_cub_char_list	*cub_fd_to_char_list_ptr_or_die(char first, int fd)

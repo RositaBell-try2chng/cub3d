@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_map_utils_bonus.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbell <rbell@gmail.com>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/19 12:46:42 by rbell             #+#    #+#             */
+/*   Updated: 2023/03/19 12:46:42 by rbell            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "cub.h"
 
 char	check_border_minimap(t_main *M, int p, int c, int flg)
@@ -8,12 +19,12 @@ char	check_border_minimap(t_main *M, int p, int c, int flg)
 	res = p - M_HALF + c;
 	if (flg == -1)
 	{
-		if (res < 0 || res / 32 >= M->map_H)
+		if (res < 0 || res / 32 >= M->map_h)
 			return (1);
 		return (0);
 	}
 	dop = M->pl->y - M_HALF + flg;
-	if (res < 0 || (res) / 32 >= M->map_W[dop / 32])
+	if (res < 0 || (res) / 32 >= M->map_w[dop / 32])
 		return (1);
 	return (0);
 }

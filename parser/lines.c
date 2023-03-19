@@ -58,9 +58,7 @@ t_cub_line_list	*cub_char_list_ptr_to_line_list_ptr_helper(
 	return (_.line_list_ptr);
 }
 
-// Fix me: outdated comment?
-// Else: prepend char to curr char_list
-// Fix me: add _or_die
+// Perhaps: add _or_die
 t_cub_line_list
 	*cub_char_list_ptr_to_line_list_ptr(t_cub_char_list *char_list_ptr)
 {
@@ -76,7 +74,8 @@ t_cub_line_list
 			_.next_ptr,
 			_.c,
 			_.tmp_line_ptr,
-			_.tmp_ptr_2});
+			_.tmp_ptr_2,
+			0});
 	return (_.line_list_ptr);
 }
 

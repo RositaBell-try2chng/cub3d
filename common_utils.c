@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   common_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbell <rbell@gmail.com>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/19 12:46:42 by rbell             #+#    #+#             */
+/*   Updated: 2023/03/19 12:46:42 by rbell            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "cub.h"
 
 char	get_map_char(char **map, double y, double x)
@@ -39,8 +50,9 @@ void	init_error_exit(t_main *m, char flg)
 
 char	*get_data_img(t_img *img)
 {
-	char *res;
+	char	*res;
 
-	res = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
+	res = mlx_get_data_addr(img->img, &img->bits_per_pixel, \
+	&img->line_length, &img->endian);
 	return (res);
 }

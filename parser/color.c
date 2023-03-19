@@ -12,7 +12,6 @@
 
 #include "cub_parser_private.h"
 
-// Fix me: use new char function here
 int	cub_parse_color_number_or_die(char first, int fd, char *last_out_ptr)
 {
 	t_cub_char_list	*result;
@@ -82,15 +81,12 @@ blue:
 spaces
 new line
 */
-// Fix me: outdated comment?
-// Fix me: is order correct?
 void	cub_parse_color_or_die(
 	int fd,
 	t_cub_conf *conf_ptr,
 	t_cub_parse_color_of_what what
 )
 {
-	char	not_space;
 	char	last;
 	int		r;
 	int		g;

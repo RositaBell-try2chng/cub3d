@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   music_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbell <rbell@gmail.com>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/19 12:46:42 by rbell             #+#    #+#             */
+/*   Updated: 2023/03/19 12:46:42 by rbell            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "cub.h"
 
 static void	signal_handler(int sig)
@@ -7,7 +18,7 @@ static void	signal_handler(int sig)
 	exit(0);
 }
 
-static void	music_turn_on()
+static void	music_turn_on(void)
 {
 	while (1)
 		system("exec afplay ./rock/doom.m4a");

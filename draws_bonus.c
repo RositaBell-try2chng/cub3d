@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draws_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbell <rbell@gmail.com>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/19 12:46:42 by rbell             #+#    #+#             */
+/*   Updated: 2023/03/19 12:46:42 by rbell            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "cub.h"
 
 static void	find_start_end(double wall_h, int *st, int *en)
@@ -8,7 +19,7 @@ static void	find_start_end(double wall_h, int *st, int *en)
 		(*en) = 768;
 }
 
-void	draw_vis(t_main *M, t_hit *hit)
+void	draw_vis(t_main *m, t_hit *hit)
 {
 	int				y;
 	unsigned int	*dst;
@@ -21,13 +32,13 @@ void	draw_vis(t_main *M, t_hit *hit)
 	find_start_end(wall_h, &wall_start, &wall_end);
 	while (y < 768)
 	{
-		dst = get_pxl_adr(&M->mp->vis, hit->cnt, y);
+		dst = get_pxl_adr(&m->mp->vis, hit->cnt, y);
 		if (y >= wall_start && y < wall_end)
 			*dst = get_pxl(wall_h, hit, y - wall_start);
 		else if (y < 384)
-			*dst = UP_COLOR;
+			*dst = m->ceiling_color;
 		else
-			*dst = DOWN_COLOR;
+			*dst = m->floor_color;
 		y++;
 	}
 }

@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbell <rbell@gmail.com>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/19 12:46:42 by rbell             #+#    #+#             */
+/*   Updated: 2023/03/19 12:46:42 by rbell            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "cub.h"
 
 char	open_walls(t_mlx *mp, t_main *m)
 {
-	t_img *i;
+	t_img	*i;
 
 	i = &mp->wall_w;
 	i->img = mlx_xpm_file_to_image(mp->mlx, m->path_west, &i->w, &i->h);
@@ -12,7 +23,6 @@ char	open_walls(t_mlx *mp, t_main *m)
 	i->img = mlx_xpm_file_to_image(mp->mlx, m->path_north, &i->w, &i->h);
 	i = &mp->wall_s;
 	i->img = mlx_xpm_file_to_image(mp->mlx, m->path_south, &i->w, &i->h);
-
 	if (!mp->wall_w.img || !mp->wall_e.img || \
 		!mp->wall_n.img || !mp->wall_s.img)
 		return (0);
@@ -23,7 +33,7 @@ char	open_walls(t_mlx *mp, t_main *m)
 	return (1);
 }
 
-void    imgs_init(t_main *m)
+void	imgs_init(t_main *m)
 {
 	m->mp->vis.img = mlx_new_image(m->mp->mlx, 1024, 768);
 	if (!m->mp->vis.img)
@@ -33,11 +43,13 @@ void    imgs_init(t_main *m)
 	m->mp->vis.addr = get_data_img(&m->mp->vis);
 }
 
-static t_pl *save_position(t_main *main, char C, int i, int j)
+static t_pl	*save_position(t_main *main, char C, int i, int j)
 {
-	t_pl *pl = main->pl;
-	pl->x = j * 32 + 16;
-	pl->y = i * 32 + 16;
+	t_pl	*pl;
+
+	pl = main->pl;
+	pl->x = j * SCALE + (SCALE / 2);
+	pl->y = i * SCALE + (SCALE / 2);
 	if (C == 'N')
 		pl->ang = 270;
 	else if (C == 'S')
@@ -50,10 +62,10 @@ static t_pl *save_position(t_main *main, char C, int i, int j)
 	return (pl);
 }
 
-t_pl    *player_init(t_main *main)
+t_pl	*player_init(t_main *main)
 {
-	int     i;
-	int     j;
+	int	i;
+	int	j;
 
 	main->pl = malloc(sizeof(t_pl));
 	main->pl->flg_trn_l = 0;
@@ -73,5 +85,5 @@ t_pl    *player_init(t_main *main)
 				return (save_position(main, main->map[i][j], i, j));
 		}
 	}
-	return main->pl;
+	return (main->pl);
 }

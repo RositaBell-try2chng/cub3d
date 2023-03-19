@@ -54,7 +54,7 @@ void	cub_check_map_left_and_right_or_die_advance(
 // First line is checked by a different function
 // Everything in range [must_be_walls; ∞) must be '1'
 // int must_be_walls = min(curr -> length, prev -> length);
-// Fix me: cliff is a weird word
+// Perhaps: cliff is a weird word
 void	cub_check_map_left_and_right_or_die(
 	t_cub_line_list *prev,
 	t_cub_line_list *curr

@@ -1,14 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbell <rbell@gmail.com>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/19 12:46:42 by rbell             #+#    #+#             */
+/*   Updated: 2023/03/19 12:46:42 by rbell            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "cub.h"
+
+static void	free_walls(t_main *m)
+{
+	free(m->path_east);
+	free(m->path_west);
+	free(m->path_north);
+	free(m->path_south);
+}
 
 int	ft_red_cross(t_main *m)
 {
 	int	i;
 
 	i = 0;
-	printf("x = %lf, y = %lf, ang = %lf\n", m->pl->x, m->pl->y, m->pl->ang);
 	free(m->pl);
 	while (m->map && m->map[i])
 		free(m->map[i++]);
+	free(m->map_w);
+	free_walls(m);
 	mlx_destroy_image(m->mp->mlx, m->mp->vis.img);
 	mlx_destroy_image(m->mp->mlx, m->mp->wall_w.img);
 	mlx_destroy_image(m->mp->mlx, m->mp->wall_e.img);

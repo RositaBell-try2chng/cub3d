@@ -1,4 +1,4 @@
-COMMON_SRCS	= main.c ft_split.c raycast.c casts_utils.c \
+COMMON_SRCS	= main.c raycast.c casts_utils.c \
               cast_horisontal_vertical.c cast_left_down.c cast_left_up.c cast_right_down.c cast_right_up.c \
               draws_utils.c \
               common_utils.c \
@@ -36,8 +36,6 @@ OBJS_BON	= ${SRCS_BON:.c=.o}
 
 HEAD		= cub.h
 
-HEAD_BON	= cub_bonus.h
-
 NAME		= cub3D
 
 NAME_BON	= cub3D_bonus
@@ -62,14 +60,14 @@ CC			= \
 # Later: possible build optimization: add colon to force evaluation
 CFLAGS		= -Wall -Wextra -Werror -fsanitize=address -O2 \
 	${if ${filter Linux, ${shell uname}}, -DCUB_PLATFORM=CUB_PLATFORM_LINUX} \
-	${if ${filter Darwin, ${shell uname}}, -DCUB_PLATFORM=CUB_PLATFORM_MACOS}
+	${if ${filter Darwin, ${shell uname}}, -DCUB_PLATFORM=CUB_PLATFORM_MACOS} \
 
 LIBS = \
 	${if ${filter Linux, ${shell uname}}, ${LINUX_LIBS}} \
 	${if ${filter Darwin, ${shell uname}}, ${MACOS_LIBS}}
 
 # Fix me: switch on platform to use -Imlx, -Imlx_linux or none at all
-%.o:	%.c ${HEAD}
+%.o:	%.c ${HEAD} ${HEAD_BON}
 		${CC} -Imlx ${CFLAGS} -c $< -o $@
 
 all:		${NAME}
@@ -77,7 +75,7 @@ all:		${NAME}
 ${NAME}:	${OBJS}
 			${CC} ${CFLAGS} ${OBJS} ${LIBS} -o ${NAME}
 
-bonus:		${NAME_BON}
+bonus:			${NAME_BON}
 
 ${NAME_BON}:	${OBJS_BON}
 				${CC} ${CFLAGS} ${OBJS_BON} ${LIBS} -o ${NAME_BON}

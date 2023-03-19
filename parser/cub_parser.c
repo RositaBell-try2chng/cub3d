@@ -15,9 +15,6 @@
 #include "cub_parser.h"
 #include "cub_parser_private.h"
 
-// Fix me: use this everywhere
-// _Bool is_line_break(char c) { return c == '\n' || c == '\r'; }
-
 #define EXTENSION ".cub"
 // Note: does not consume input
 void	cub_check_extension_or_die(char *name)
@@ -46,8 +43,8 @@ void	cub_check_extension_or_die(char *name)
 }
 #undef EXTENSION
 
-// Fix me: sss should be ss?
-// Fix me: this is madness
+// Perhaps: sss should be ss?
+// Perhaps: this is madness
 // const char		*ss[] = {"south", "north", "east", "west", 0};
 void	c22(
 	int i1,
@@ -67,7 +64,7 @@ void	c22(
 	*(sss[i1]) = path;
 }
 
-// Fix me: this is madness
+// Perhaps: this is madness
 void	c2(char c1, char c2, int fd, t_cub_conf *conf_ptr)
 {
 	const char	not_space = cub_skip_spaces_or_die(fd);
@@ -87,7 +84,7 @@ void	c2(char c1, char c2, int fd, t_cub_conf *conf_ptr)
 	c22(i, c2, (char *)path, conf_ptr);
 }
 
-// Fix me: this is madness
+// Perhaps: this is madness
 void	cub_parse_entry_or_die(
 	int fd,
 	t_cub_conf *conf_ptr,

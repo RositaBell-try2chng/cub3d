@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub_macos.h                                        :+:      :+:    :+:   */
+/*   cub_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbell <rbell@gmail.com>                    +#+  +:+       +#+        */
+/*   By: ghelman <alan.urman@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/19 12:46:42 by rbell             #+#    #+#             */
-/*   Updated: 2023/03/19 12:46:42 by rbell            ###   ########.fr       */
+/*   Created: 2023/03/19 12:46:42 by ghelman           #+#    #+#             */
+/*   Updated: 2023/03/19 12:46:42 by ghelman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef CUB_MACOS_H
-# define CUB_MACOS_H
 
-# define ESC 53
-# define W 13
-# define A 0
-# define S 1
-# define D 2
-# define RIGHT_ARROW 124
-# define LEFT_ARROW 123
+#ifndef MEM_H
+# define MEM_H
+
+void	*cub_malloc_or_die(size_t size);
+int		cub_strlen(char *input);
+void	cub_memcpy(char *a, char *b, int size);
 
 #endif

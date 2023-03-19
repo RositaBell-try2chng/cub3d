@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub_parser_private.h"
+#include "mem.h"
 
 void	*cub_malloc_or_die(size_t size)
 {
@@ -23,4 +24,16 @@ void	*cub_malloc_or_die(size_t size)
 		exit(1);
 	}
 	return (result);
+}
+
+void	cub_memcpy(char *a, char *b, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		a[i] = b[i];
+		i++;
+	}
 }

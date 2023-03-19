@@ -13,7 +13,6 @@
 #ifndef CUB_LINUX_H
 # define CUB_LINUX_H
 
-// # include <X11/X.h> // Seems to be working without this
 # include <X11/keysym.h>
 
 enum e_cub_key_bindings {
