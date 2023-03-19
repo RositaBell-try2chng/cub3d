@@ -12,6 +12,24 @@
 
 #include "cub_parser_private.h"
 
+void	cub_verify_char_or_die(
+	struct s_cub_char_list_ptr_to_line_list_ptr_helper_args *_
+)
+{
+	if (_->c == 'N' || _->c == 'S' || _->c == 'E' || _->c == 'W')
+	{
+		cub_true_or_error_die(!_->met_player,
+			"cub_verify_char_or_die: two player in map");
+		_->met_player = 1;
+	}
+	if (_->c != '1' && _->c != '0' && _->c != ' '
+		&& _->c != 'N' && _->c != 'S' && _->c != 'E'
+		&& _->c != 'W' && _->c != '\n' && _->c != '\r')
+	{
+		cub_error_die("cub_verify_char_or_die: invalid character in map");
+	}
+}
+
 t_cub_line_list	*cub_char_list_ptr_to_line_list_ptr_helper(
 	struct s_cub_char_list_ptr_to_line_list_ptr_helper_args _
 )
@@ -33,6 +51,7 @@ t_cub_line_list	*cub_char_list_ptr_to_line_list_ptr_helper(
 			_.line_list_ptr->value = _.tmp_ptr_2;
 			_.line_list_ptr->length++;
 		}
+		cub_verify_char_or_die(&_);
 		free(_.char_list_ptr);
 		_.char_list_ptr = _.next_ptr;
 	}

@@ -78,6 +78,7 @@ struct s_cub_char_list_ptr_to_line_list_ptr_helper_args
 	char			c;
 	t_cub_line_list	*tmp_line_ptr;
 	t_cub_char_list	*tmp_ptr_2;
+	_Bool			met_player;
 };
 
 t_cub_line_list	*new_line_list_or_die(t_cub_line_list *next);

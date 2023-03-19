@@ -9,7 +9,7 @@ trap 'rm -f tester' 0
 
 sleep 0.5
 
-pid=$(ps | grep tester | grep -v grep | cut -f 2 -d ' ')
+pid=$(ps | grep tester | grep -v grep | sed 's/^ *//' | cut -f 1 -d ' ')
 
 leaks "$pid"
 

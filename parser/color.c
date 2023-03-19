@@ -92,26 +92,27 @@ void	cub_parse_color_or_die(
 {
 	char	not_space;
 	char	last;
-	int		red;
-	int		green;
-	int		blue;
+	int		r;
+	int		g;
+	int		b;
 
-	not_space = cub_skip_spaces_or_die(fd);
-	red = cub_parse_color_number_or_die(not_space, fd, &last);
+	r = cub_parse_color_number_or_die(cub_skip_spaces_or_die(fd), fd, &last);
+	if (last == ' ')
+		last = cub_skip_spaces_or_die(fd);
 	cub_true_or_error_die(last == ',',
 		"cub_parse_color_or_die: expected comma");
-	not_space = cub_skip_spaces_or_die(fd);
-	green = cub_parse_color_number_or_die(not_space, fd, &last);
+	g = cub_parse_color_number_or_die(cub_skip_spaces_or_die(fd), fd, &last);
+	if (last == ' ')
+		last = cub_skip_spaces_or_die(fd);
 	cub_true_or_error_die(last == ',',
 		"cub_parse_color_or_die: expected comma");
-	not_space = cub_skip_spaces_or_die(fd);
-	blue = cub_parse_color_number_or_die(not_space, fd, &last);
+	b = cub_parse_color_number_or_die(cub_skip_spaces_or_die(fd), fd, &last);
 	if (last == ' ')
 		last = cub_skip_spaces_or_die(fd);
 	cub_true_or_error_die(
 		last == '\n' || last == '\r',
 		"cub_parse_color_or_die: expected new line");
 	red_green_blue_what((struct s_red_green_blue_what_args){
-		conf_ptr, red, green, blue, what,
+		conf_ptr, r, g, b, what,
 	});
 }
