@@ -10,32 +10,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB_PARSER_H
-# define CUB_PARSER_H
+#include "cub_parser_private.h"
 
-# include <stddef.h>
+int	cub_read1(int fd)
+{
+	int		result;
+	char	c;
+	int		much_read;
 
-// Result of a parse
-// Malloc'ed lines, paths
-typedef struct s_cub_conf {
-	char	**lines;
-	int		lines_length;
-	char	*path_north;
-	char	*path_south;
-	char	*path_east;
-	char	*path_west;
-	_Bool	floor_set;
-	int		floor_red;
-	int		floor_green;
-	int		floor_blue;
-	_Bool	ceiling_set;
-	int		ceiling_red;
-	int		ceiling_green;
-	int		ceiling_blue;
-}	t_cub_conf;
+	much_read = read(fd, &c, 1);
+	if (much_read == 1)
+		result = c;
+	else
+		result = much_read;
+	return (result);
+}
 
-// Input: path to .cub file
-// Output: death or valid conf
-t_cub_conf	cub_parse(char *path);
+int	cub_read1_or_die(int fd)
+{
+	int	much_read;
 
-#endif
+	much_read = cub_read1(fd);
+	if (much_read == 0)
+		return (-1);
+	if (much_read == -1)
+	{
+		perror("Error\nread1_or_die");
+		exit(1);
+	}
+	return (much_read);
+}
+
+char	cub_read_char_or_die(int fd)
+{
+	int	result;
+
+	result = cub_read1_or_die(fd);
+	if (result == -1)
+	{
+		cub_error_die(
+			"cub_read1_char_or_die: "
+			"expected a char, but got end of file");
+	}
+	return (result);
+}

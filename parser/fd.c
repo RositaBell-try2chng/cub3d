@@ -10,32 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB_PARSER_H
-# define CUB_PARSER_H
+#include "cub_parser_private.h"
 
-# include <stddef.h>
+char	cub_skip_spaces_or_die(int fd)
+{
+	char	result;
 
-// Result of a parse
-// Malloc'ed lines, paths
-typedef struct s_cub_conf {
-	char	**lines;
-	int		lines_length;
-	char	*path_north;
-	char	*path_south;
-	char	*path_east;
-	char	*path_west;
-	_Bool	floor_set;
-	int		floor_red;
-	int		floor_green;
-	int		floor_blue;
-	_Bool	ceiling_set;
-	int		ceiling_red;
-	int		ceiling_green;
-	int		ceiling_blue;
-}	t_cub_conf;
+	result = ' ';
+	while (result == ' ')
+	{
+		result = cub_read_char_or_die(fd);
+	}
+	return (result);
+}
 
-// Input: path to .cub file
-// Output: death or valid conf
-t_cub_conf	cub_parse(char *path);
+char	cub_skip_new_lines_or_die(int fd)
+{
+	char	result;
 
-#endif
+	result = '\n';
+	while (result == '\n' || result == '\r')
+	{
+		result = cub_read_char_or_die(fd);
+	}
+	return (result);
+}
+
+void	cub_write_char_list_or_die(int fd, t_cub_char_list *ptr)
+{
+	while (ptr)
+	{
+		cub_write1loop_or_die(fd, ptr -> value);
+		ptr = ptr -> next;
+	}
+}

@@ -10,32 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB_PARSER_H
-# define CUB_PARSER_H
+#include "cub_parser_private.h"
 
-# include <stddef.h>
+// Assumes ASCII
+_Bool	cub_is_digit(char c)
+{
+	return (c >= '0' && c <= '9');
+}
 
-// Result of a parse
-// Malloc'ed lines, paths
-typedef struct s_cub_conf {
-	char	**lines;
-	int		lines_length;
-	char	*path_north;
-	char	*path_south;
-	char	*path_east;
-	char	*path_west;
-	_Bool	floor_set;
-	int		floor_red;
-	int		floor_green;
-	int		floor_blue;
-	_Bool	ceiling_set;
-	int		ceiling_red;
-	int		ceiling_green;
-	int		ceiling_blue;
-}	t_cub_conf;
-
-// Input: path to .cub file
-// Output: death or valid conf
-t_cub_conf	cub_parse(char *path);
-
-#endif
+// Assumes ASCII
+int	cub_char_to_int(char c)
+{
+	return (c - '0');
+}

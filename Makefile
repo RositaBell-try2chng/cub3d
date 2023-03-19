@@ -4,7 +4,25 @@ COMMON_SRCS	= main.c ft_split.c raycast.c casts_utils.c \
               common_utils.c \
               move.c move_utils.c \
               game_play.c \
-              parser/cub_parser.c
+			$(addprefix parser/, \
+				cub_parser.c \
+				write_syscall.c \
+				map.c \
+				map_left_right_check.c \
+				read.c \
+				color.c \
+				color_2.c \
+				color_3.c \
+				number.c \
+				lines.c \
+				chars.c \
+				mem.c \
+				arrayz.c \
+				error.c \
+				fd.c \
+				line_parse.c \
+				) \
+
 
 SRCS_NO_BON	= ${COMMON_SRCS} draws.c init.c hooks.c
 
